@@ -15,14 +15,11 @@ class CommunityDistrict(models.Model):
     def __str__(self):
         return self.name
     
-
-
 class Language(models.Model):
     name = models.CharField(max_length = 50)
 
     def __str__(self):
-        return self.name
-    
+        return self.name 
 
 class LEPPopulation(models.Model):
     communitydistrict = models.ForeignKey(CommunityDistrict, on_delete = models.CASCADE)

@@ -1,102 +1,84 @@
-.demo_header {
+:root {
+    --orange: #d67616;
+    --lightblue: #62aa9f;
+    --darkblue: #1c8782;
+    --darkorange: #c7531a;
+    --red: #a63a24;
+    --darkred: #822b19;
+    --panelbg:rgba(234, 248, 249, 0.85);
+  }
+
+h1{
     font-weight: bold;
 }
 
-.demo_info {
-    color: #176F6A;
-    margin:0;
-}
-
-input[type="radio"]{
-    margin-top:5px;
-    margin-left:5px;
+.demo-info {
+    color: var(--darkblue);
 }
 
 .panel{
-    background-color:rgba(234,248,249,0.85);
-    border-radius: 10px;
+    background-color:var(--panelbg);
+    backdrop-filter: blur(3px);
 }
 
 body{
     background: url("../images/nyc_bg.jpg");
     background-size: cover;
-    backdrop-filter: blur(2px);
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100dvh;
 }
 
-.panel > .panel-heading {
-    /* background-color: #833220; */
-    /* border-color:#833220; */
-    background-color:#a63a24;
-    border-color:#a63a24;
+h2{
+    color:var(--darkblue);
 }
 
-#panel-demo{
-    /* border-color:#833220; */
-    border-color:#a63a24;
+h3 {
+    background-color:var(--darkred);
+    font-size: 1rem;
+    font-weight: 600;
+    padding:.5rem;
+    margin:0;
+    color:white;
+    text-align: start;
 }
 
-#selDataset{
-    width:100%
+p{
+    margin:0 !important;
 }
 
-#photo-credit{
-    background-color:rgba(234,248,249,0.65);
-    position:fixed;
-    font-size:small;
-    font-weight:bold;
-    padding:0 5px;
-    bottom:0;
-    right:0;
-}
-
-  
 .leaflet-popup-content {
     text-align: center;
+    /* padding:1rem; */
+    margin:0 !important;
+}
+
+.leaflet-popup-content-wrapper{
+    border-radius: .375rem !important;
 }
   
   /* CSS from the leaflet-choropleth documentation */
 .legend {
     color: #555;
-    padding: 6px 8px;
-    font: 12px Arial, Helvetica, sans-serif;
+    font-family: Helvetica;
     font-weight: bold;
-    background: white;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;  
+    border-radius: 5px;
+    padding:.5rem;
 }
 
-.legend ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    clear: both;
-  }
+.gradient-box{
+    background:linear-gradient(90deg, #feeed7,#f8b550,#f17604,#cc3600);
+    width:100%;
+    height:15px;
+    border:2px solid var(--orange)
+}
 
-.legend li {
-    display: inline-block;
-    width: 15px;
-    height: 22px;
-  }
-
-.legend .min {
-    float: left;
-    padding-bottom: 5px;
-  }
-.legend .max {
-    float: right;
-  }
   
-h3 {
-    text-align: center;
-  }
-
 .content-container{
     position:relative;
-
 }
+
 
 .content-container>*{
     position: absolute;
@@ -113,6 +95,63 @@ h3 {
 
 select{
     width:100%;
+    background-color: rgba(234, 248, 249);
+}
+
+option{
+    background-color: rgba(234, 248, 249);
+}
+
+button{
+    border:0;
+    padding:.25rem;
+    box-shadow: inset 0 0 5px -3px black;
+    background-color: var(--darkred);
+    color:white;
+    transition:.3s;
+    flex-grow:1;
+    display: flex;
+    column-gap: .25rem;
+    justify-content: center;
+    align-items: center;
+}
+
+button:first-child{
+    border-start-start-radius: .375rem;
+}
+
+button:last-child{
+    border-start-end-radius: .375rem;
+}
+
+button:hover,button.selected:hover,button:active,button.selected:active{
+    background-color: var(--orange);
+}
+
+button.selected{
+    box-shadow: none;
+    background-color: var(--panelbg);
+    color:inherit;
+    /* flex-grow:1; */
+}
+
+
+
+
+#bar{
+    min-height: 300px;
+}
+
+.content-container{
+    min-height: 500px;
+}
+
+a{
+    color:var(--darkblue)
+}
+
+a:hover{
+    color:var(--lightblue)
 }
 
 /* Foto de <a href="https://unsplash.com/@jonathanroger?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Jonathan Roger</a> en <a href="https://unsplash.com/es/fotos/LY1eyQMFeyo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>

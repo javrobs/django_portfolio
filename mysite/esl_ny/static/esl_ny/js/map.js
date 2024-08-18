@@ -1,12 +1,9 @@
 // Creating the map object
-
-
 let geojson;
 let myMap = null;
 
-
-
-function updateMap(data){
+function updateMap(){
+  const data=savedData.communities;
   if (myMap==null){
     myMap = L.map("map-container", {center: [40.7128, -74.0059],zoom: 10});
     let tileLayer=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -27,36 +24,29 @@ function updateMap(data){
       fillOpacity: 0.6
     },
     onEachFeature: function(feature, layer) {
-      layer.bindPopup(`<h3 class="tight">${feature.properties.name}<br> (${feature.properties.borough})</h3> 
-                        <br>
-                        <h4 class="tight">LEP Population: ${feature.properties.population.toLocaleString("en-US")}</h4>`);
+      layer.bindPopup(`<h3 class='rounded-top'>${feature.properties.name}</h3>
+                      <p class='pt-2'>${feature.properties.borough}</p> 
+                      <p class='py-2'>LEP Population: <span class='demo-info'>${feature.properties.population.toLocaleString("en-US")}</span></p>`);
     }
   }).addTo(myMap);
   // Set up the legend.
   let legend = L.control({ position: "bottomright" });
       // Add minimum and maximum.
       legend.onAdd = function() {
-        let somediv=document.querySelector("div.info.legend")
-        if(somediv)somediv.remove()
+        let somediv=document.querySelector("div.info.legend");
+        if(somediv)somediv.remove();
         let div = L.DomUtil.create("div", "info legend");
         let limits = geojson.options.limits;
-        let colors = geojson.options.colors;
-        let labels = [];
-    
-        // Add the minimum and maximum.
-        let legendInfo = "<h3>Population in<br> Community District</h3>" +
-          "<div class=\"labels\">" +
-            "<div class=\"min\">" + limits[0].toLocaleString("en-US") + "</div>" +
-            "<div class=\"max\">" + limits[limits.length - 1].toLocaleString("en-US") + "</div>" +
-          "</div>";
-    
-        div.innerHTML = legendInfo;
-    
-        colors.forEach(function(color) {
-          labels.push("<li style=\"background-color: " + color + "\"></li>");
-        });
-    
-        div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+        div.innerHTML = `<p class='fs-5'>Population in Community District</p>
+                        <div class='d-flex justify-content-between'>
+                          <div class='min'>
+                            ${limits[0].toLocaleString("en-US")}
+                          </div>
+                          <div class='max'>
+                            ${limits[limits.length - 1].toLocaleString("en-US")}
+                          </div>
+                        </div>
+                        <div class='gradient-box'></div>`;
         return div;
       };
     // Adding the legend to the map
