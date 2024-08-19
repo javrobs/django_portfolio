@@ -1,9 +1,4 @@
-const sunburstInput=document.getElementById('sunburst-input');
-const mapInput=document.getElementById('map-input');
-const aboutInput=document.getElementById('about-input');
 const contentContainer=document.getElementById('content-container');
-const mapContainer=document.getElementById('map-container');
-const sunburstContainer=document.getElementById('sunburst-container');
 const selectLanguage=document.getElementById('select-language');
 const languageSpeakers=document.getElementById('lang-speakers');
 const speakersPercentage=document.getElementById('speakers-percentage');
@@ -17,15 +12,18 @@ function initialize(){
 
 function fetchJsonThen(urlString,thenDoThis){
     const url=(selectLanguage.value)?`/${urlString}/${selectLanguage.value}`:`/${urlString}_all`;
+    let timeThen=performance.now()
+    console.log('calling '+urlString)
     fetch(url).then(data=>data.json()).then(data=>{
         savedData[urlString]=data;
+        console.log('received',{timeElapsed:(performance.now()-timeThen)/1000,data:data})
         thenDoThis();
     });
 }
 
 function languageChanged(){
-    fetchJsonThen('populations',updateSunburst);
     fetchJsonThen('demographic',demoBox);
+    fetchJsonThen('populations',updateSunburst);
     fetchJsonThen('communities',updateMap);
 }
 
@@ -42,19 +40,6 @@ function optionChanged(item) {
             document.getElementById(`${child.id.split('-')[0]}-input`).classList.remove('selected');
         }
     }
-    // if (item==mapInput){
-    //     mapContainer.classList.add('forward');
-    //     sunburstContainer.classList.remove('forward');
-    //     mapInput.classList.add('selected');
-    //     sunburstInput.classList.remove('selected');
-    // } else if (item==sunburstInput){
-    //     mapContainer.classList.remove('forward');
-    //     sunburstContainer.classList.add('forward');
-    //     mapInput.classList.remove('selected');
-    //     sunburstInput.classList.add('selected');
-    // } else {
-
-    // }
 }
 
 function demoBox() {
@@ -71,19 +56,10 @@ function barGraph(){
         activePlots.push('bar');
     }
     const graphData=savedData.demographic.largestLEPs;
-    const population = graphData.map(row => row.population);
-    let text=['','','','',''];
-    const communities = graphData.map(row => `${row.community_district.split(",")[0]}<br><b>${row.borough}</b>`);
-    let title;
-    if(savedData.demographic.lepPercentage!=undefined){
-        title = `Largest ${graphData[0].language} populations`;
-        text = graphData.map(each => each.population.toLocaleString('en-US'))
-    } else {
-        text=graphData.map(each=>{
-            return `${each.language}<br>${each.population.toLocaleString('en-US')}`
-        });
-        title = 'Largest Community District<br>One-language populations'
-    }
+    const population = graphData.map(row => row.lep_population);
+    const text = population.map(each => each.toLocaleString('en-US'));
+    const communities = graphData.map(row => `${row.community_district}<br><b>${row.borough_name}</b>`);
+    const title=(savedData.demographic.lepPercentage==undefined)?'Largest LEP Populations':`Largest ${savedData.demographic.selectedLanguage} Populations`;
     const barData =[
         {
             y: communities.reverse(),
@@ -100,14 +76,14 @@ function barGraph(){
                 width:div.offsetWidth-1};
     const barLayout = {
         title: title,
-        margin: {t: 50, l: 150 ,b:30,r:10},
+        margin: {t: 50, l: 150 ,b:20,r:10},
         height: dims.height,
         width: dims.width,
         paper_bgcolor: "rgba(255, 255, 255, 0)",
         plot_bgcolor:"rgba(255, 255, 255, 0)",
-        bargap :0.05,
+        bargap :0.05
     };
-    setTimeout(()=>Plotly.newPlot("bar" , barData , barLayout,{staticPlot: true}),5);
+    Plotly.newPlot("bar" , barData , barLayout,{staticPlot: true});
 }
 
 
@@ -124,12 +100,12 @@ function updateSunburst() {
         hoverinfo:"label+text+value+percent parent+percent root",
         branchvalues: "total",
         ids: data.list.map(line=>line.id),
-        labels: data.list.map(line=>{return line.label.split(",")[0]}),
+        labels: data.list.map(line=>{return line.label}),
         parents: data.list.map(line=>line.parent),
         marker:{line:{color:"white",width:0.3}},
         values: data.list.map(line=>line.value),
         insidetextorientation: 'radial',
-        textfont:{size:12,color:"black"}
+        textfont:{size:14,color:"black"}
     };
     const div=document.getElementById('sunburst-container');
     const dims={height:div.offsetHeight-1,
@@ -141,7 +117,7 @@ function updateSunburst() {
       width: dims.width,
       sunburstcolorway:["d67616","62aa9f","1c8782","c7531a","a63a24"]
     };
-    setTimeout(()=>Plotly.newPlot('sunburst-container', [trace], layout, {displayModeBar: false}),5);
+    Plotly.newPlot('sunburst-container', [trace], layout, {displayModeBar: false});
 }
 
 window.addEventListener("resize", ()=>{
@@ -151,7 +127,7 @@ window.addEventListener("resize", ()=>{
 });
 
 function refreshPlots(){
-    if(savedData.populations){
+    if(activePlots.includes('sunburst-container')){
         updateSunburst();
     }
     if(activePlots.includes('bar')){

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count,Sum,F
 
 # Create your models here.
 class Borough(models.Model):
@@ -6,7 +7,7 @@ class Borough(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class CommunityDistrict(models.Model):
     name = models.CharField(max_length = 100)
     borough = models.ForeignKey(Borough, on_delete = models.CASCADE)

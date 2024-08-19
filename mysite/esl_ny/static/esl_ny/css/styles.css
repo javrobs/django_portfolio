@@ -5,7 +5,7 @@
     --darkorange: #c7531a;
     --red: #a63a24;
     --darkred: #822b19;
-    --panelbg:rgba(234, 248, 249, 0.85);
+    --panelbg:rgba(234, 248, 249, .9);
   }
 
 h1{
@@ -18,7 +18,7 @@ h1{
 
 .panel{
     background-color:var(--panelbg);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(2px);
 }
 
 body{
@@ -79,6 +79,17 @@ p{
     position:relative;
 }
 
+@media (min-width: 768px) {
+    .content-container{
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 767px){
+    .content-container{
+    aspect-ratio: 1/1;
+  }
+}
 
 .content-container>*{
     position: absolute;
@@ -142,9 +153,6 @@ button.selected{
     min-height: 300px;
 }
 
-.content-container{
-    min-height: 500px;
-}
 
 a{
     color:var(--darkblue)
