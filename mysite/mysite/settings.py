@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'esl_ny.apps.EslNyConfig',
+    'home.apps.HomeConfig',
     # 'django.contrib.admin',
     # 'django.contrib.auth',
     # 'django.contrib.contenttypes',

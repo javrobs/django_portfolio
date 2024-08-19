@@ -1,0 +1,182 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Javier Robles - Portfolio</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="icon" type="image/x-icon" href="{% static 'home/images/roxieicon.svg'%}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'home/css/base.css'%}">
+</head>
+<body class="d-flex flex-column">
+    <header class="container-fluid">
+        <div class="row">
+            <div class="col-12 d-flex p-3 justify-content-between align-items-center">
+                <button id="name" onclick="activatePageMini('about-me')">Javier Robles Samar</button>
+                <div id="mini-menu" class="d-md-none">
+                    <button class="custom-button" onclick="expandMiniMenu();" id="minimenu-button"><i class="bi bi-chevron-compact-down"></i></button>
+                </div>
+                <div id="menu" class="d-none d-md-flex column-gap-2">
+                    <button class="actionLink" onclick="activatePage('projects')" id="tab-projects"><i class="bi bi-terminal"></i>Projects</button>
+                    <button class="actionLink" onclick="activatePage('resume')" id="tab-resume"><i class="bi bi-file-earmark-text"></i>Resume</button>
+                    <button class="actionLink" onclick="activatePage('contact')" id="tab-contact"><i class="bi bi-person-vcard"></i>Contact</button>
+                    <button class="actionLink" onclick="activatePage('raq')" id="tab-raq"><i class="bi bi-question-circle"></i>RAQ</button>
+                </div>
+            </div>
+            <div class="col-12 divider"></div>
+        </div>
+        <div id="minimenu" class="collapsible d-md-none flex-column align-items-stretch">
+            <button class="actionLink" onclick="activatePageMini('projects')" id="tabmini-projects"><i class="bi bi-terminal"></i>Projects</button>
+            <button class="actionLink" onclick="activatePageMini('resume')" id="tabmini-resume"><i class="bi bi-file-earmark-text"></i>Resume</button>
+            <button class="actionLink" onclick="activatePageMini('contact')" id="tabmini-contact"><i class="bi bi-person-vcard"></i>Contact</button>
+            <button class="actionLink" onclick="activatePageMini('raq')" id="tabmini-raq"><i class="bi bi-question-circle"></i>RAQ</button>
+            <div class="col-12 divider"></div>  
+        </div>  
+    </header>
+    <main class="container-fluid flex-grow-1 p-3 d-flex flex-column justify-content-center" id="content">
+        <div class="row page active-page" id="about-me">
+            <div class="col-12 col-md-5 col-lg-4 px-3 d-flex justify-content-center align-items-center">
+                <img src="{% static 'home/images/meAndRoxie.jpg' %}" id="me-and-roxie">
+            </div>
+            <div class="col-12 mt-3 m-md-0 col-md-7 col-lg-8 px-3 d-flex flex-column justify-content-between">
+                <h1 class='d-none' id="greeting">Hi, I'm Javi. Welcome to my portfolio.</h1>
+                <div class="text-container flex-grow-1">
+                    <p class='d-none' id='p-1'>I'm a web developer, data analyst, and amateur cook. (That's my dog, Roxie.)</p>
+                    <p class='d-none' id='p-2'>I've been coding for two years, in both Python and Javascript. I previously worked as a design engineer in manufacturing in Monterrey, Mexico. Now, I live in Washington DC with my partner.</p>
+                    <p class='d-none' id='p-3'>I enjoy working on web projects, complex data analysis, and expanding my skills through tutorials and classes. This page has some of my projects and contact information if you'd like to connect!</p>
+                </div>
+                <div class="d-flex justify-content-center align-items-end column-gap-3 mt-3">
+                    <button class="custom-button px-3 py-2" onclick="activatePage('projects')"><i class="bi bi-terminal me-1"></i>See projects</button>
+                    <button class="custom-button px-3 py-2" onclick="activatePage('contact')"><i class="bi bi-person-vcard me-1"></i>Contact me</button>
+                </div>
+            </div>
+        </div>
+        <div class="row page" id="projects">
+            <div class="col-12">
+                <h1 class="text-center">Projects</h1>
+            </div>
+            <a class="col-md-6 mb-2 projectLink" href="https://www.etiquetasana.com/" target="_blank">
+                <div class="d-flex project-title column-gap-2">
+                    <img src="{% static 'home/images/logos/etiquetasana.svg'%}">
+                    <h2>Etiqueta Sana</h2>
+                </div>
+                <div class="image-description">
+                    <p>Description</p>
+                    <img class="project-photo"  src="{% static 'home/images/etiqueta-sqr.jpg' %}">
+                </div>
+                <ul class="tag-container">
+                    <li class="dark-tag">Full-Stack Web App</li>
+                    <li>Javascript</li>
+                    <li>Flask</li>
+                    <li>SQLAlchemy</li>
+                    <li>Login</li>
+                    <li>Amazon S3</li>
+                    <li>Email</li>
+                    <li>PythonAnywhere</li>
+                    <li>Pillow</li>
+                    <li>Bootstrap</li>
+                </ul>
+            </a>
+            <a class="col-md-6 mb-2 projectLink" href="https://javrobs.github.io/house_pricing_analysis/" target="_blank">
+                <div class="d-flex project-title column-gap-2">
+                    <img src="{% static 'home/images/logos/austinhouses.png' %}">
+                    <h2>Austin Housing</h2>
+                </div>
+                <div class="image-description">
+                    <p>Description</p>
+                    <img class="project-photo" src="{% static 'home/images/austin-sqr.jpg' %}">
+                </div>
+                <ul class="tag-container">
+                    <li class="dark-tag">Data Visualization</li>
+                    <li>Javascript</li>
+                    <li>Flask API</li>
+                    <li>Leaflet Map</li>
+                    <li>Neural Network</li>
+                    <li>TensorFlow</li>
+                    <li>Linear Regression</li>
+                    <li>Pandas</li>
+                    <li>Bootstrap</li>
+                </ul>
+            </a>
+            <a class="col-md-6 mb-2 projectLink" href="{% url 'esl_ny:esl_ny'%}" target="_blank">
+                <div class="d-flex project-title column-gap-2">
+                    <img src="{% static 'home/images/logos/nycspeakers.png'%}">
+                    <h2>NYC ESL speakers</h2>
+                </div>
+                <div class="image-description">
+                    <img class="project-photo"  src="{% static 'home/images/nyc-sqr.jpg'%}">
+                    <p>Description</p>
+                </div>
+                <div class="tag-container">
+                    <li class="dark-tag">Data Visualization</li>
+                    <li>Javascript</li>
+                    <li>Flask API</li>
+                    <li>Plotly Graphs</li>
+                    <li>Pymongo</li>
+                    <li>Bootstrap</li>
+                </div>
+            </a>
+            <a class="col-md-6 mb-2 projectLink">
+                <div class="d-flex project-title column-gap-2">
+                    <h2>NHANES analysis</h2>
+                </div>
+                <div class="image-description">
+                    <img class="project-photo" src="{% static 'home/images/nhanes-sqr.jpg'%}">
+                    <p>Description</p>
+                </div>
+                <div class="tag-container">
+                    <li class="dark-tag">Data Visualization</li>
+                    <li>Javascript</li>
+                    <li>Flask API</li>
+                    <li>SQLAlchemy</li>
+                    <li>Plotly Graphs</li>
+                    <li>Bootstrap</li>
+                </div>
+            </a>
+        </div>
+        <div class="row page" id="resume">
+            <div class="col-12 text-center">
+                <h1>Resume</h1>
+            </div>
+        </div>
+        <div class="row page" id="contact">
+            <div class="col-12 text-center">
+                <h1>Contact me</h1>
+            </div>
+        </div>
+        <div class="row page" id="raq">
+            <div class="col-12 text-center">
+                <h1>Rarely Asked Questions</h1>
+                <p>Background: Aoraki/Mount Cook in New Zealand</p>
+                <p>I want to know more about Roxie: She's 5, she doesn't like toys, she lives with my mom in Monterrey, here are other photos:</p>
+                <span>photo 1, 2,3 </span>
+            </div>
+        </div>
+    </main>
+    <footer class="container-fluid mt-auto text-center">
+        <div class="row">
+            <div class="col divider"></div>
+            <div class="col-12 my-2">
+                <p class="m-0">Thanks for stopping by</p>
+                <p class="m-0">Let's keep in touch:</p>
+                <div class="m-2">
+                    <a class="custom-button m-1 text-center py-1 px-2" href="https://www.linkedin.com/in/javier-robles-samar/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                    <a class="custom-button m-1 text-center py-1 px-2" href="mailto:javieroblesamar@gmail.com"><i class="bi bi-envelope"></i></a>
+                    <a class="custom-button m-1 text-center py-1 px-2" href="https://github.com/javrobs" target="_blank"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+            <!-- <div class="col-12 col-md-6 my-2">
+                <span>
+                    <i class="bi bi-image me-1"></i>Background by<br>
+                    <a target="_blank" href="https://unsplash.com/es/@aryncreativestudio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Aaron Andary</a> on <a href="https://unsplash.com/es/fotos/fotografia-de-cielo-azul-afHVU5hBqnw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a>
+                </span>
+            </div> -->
+        </div>
+    </footer>
+    <!-- <div style="position: fixed;"></div> -->
+</body>
+<script src="{% static 'home/js/script.js'%}"></script>
+</html>

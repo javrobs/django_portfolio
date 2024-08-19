@@ -1,0 +1,252 @@
+
+:root{
+    --darktext:#023;
+    --darktextlow:#023b;
+    --accent:#fb8525;
+    --accentTransparent:#fb852533;
+    --text:#e0d4f6;
+    --textTransparent:#e0d4f633;
+}
+
+
+
+@font-face {
+    font-family: Raleway;
+    src: url(../fonts/Raleway-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(../fonts/Manrope-VariableFont_wght.ttf) format("truetype"),
+        url(../fonts/Manrope-VariableFont_wght.ttf) format("truetype-variations");
+    font-weight: 100 1000;
+}
+
+body{
+    min-height: 100dvh;
+    font-family: Manrope,sans-serif;
+    color:var(--text);
+    background-color: #023;
+    background: linear-gradient(44deg, #0129 38%, #0129 100%), url(../images/background-3.jpg);
+    background-size: cover;
+    background-position: 50%;
+    background-attachment: fixed;
+    text-shadow: 1px 1px var(--darktextlow);
+}
+
+
+button{
+    background-color: unset;
+    border:unset;
+    color:unset;
+}
+
+a{
+    color:unset;
+    text-decoration: none;
+    border-radius: .25rem;
+}
+
+a:hover,a:active{
+    box-shadow: 0 0 0 5px var(--accentTransparent);
+}
+
+#name{
+    font-size:1.5rem;
+    transition-duration: .1s;
+    text-decoration: none;
+    font-family: Manrope;
+    cursor:pointer;
+    color:var(--accent);
+    font-weight: 600;
+    border-radius: .25rem;
+    padding:.5rem;
+}
+
+#name:hover{
+    font-weight: 400;
+    background-color: var(--accentTransparent);
+    font-size:2rem;
+    transition-duration: .3s;
+}
+
+
+img{
+    box-shadow: .1rem .1rem .2rem var(--darktextlow);
+    border-radius: 1rem;
+    max-width:100%;
+}
+
+img#me-and-roxie{
+    max-height: 400px;
+    box-shadow: .15rem .15rem .25rem #000A;
+}
+
+.actionLink{
+    padding:.5rem;
+    transition-duration: .1s;
+    cursor:pointer;    
+    border-radius: .5rem;
+}
+
+.actionLink:hover{
+    font-size:larger;
+    transition-duration: .3s;    
+    background-color: var(--textTransparent);
+}
+
+button.actionLink>i{
+    margin-right:.25rem;
+}
+
+i{
+    text-shadow: none;
+}
+
+
+h1,h2,#name{
+    font-family:Raleway,sans-serif;
+}
+
+h1,#name{
+    color:var(--accent);
+}
+
+
+.divider{
+    box-shadow: inset 0 0 .25rem #0006;
+    padding:3px;
+}
+
+
+.custom-button,a.custom-button{
+    background-color: var(--text);
+    box-shadow:0 0 0 0 var(--accentTransparent);
+    color:var(--darktext);
+}
+
+.custom-button:hover{
+    box-shadow:0 0 0 .5rem var(--accentTransparent);
+    background-color: var(--accent);
+    /* color:var(--text); */
+}
+
+header,footer{
+    background-color: #181828bb;
+    backdrop-filter: blur(3px);
+    z-index:3;
+}
+
+footer{
+    background-color: #181828;
+}
+
+.collapsible{
+    overflow: hidden;
+    display: none;
+}
+
+.collapsible.expanded{
+    display: flex;
+}
+
+
+
+header{
+    position:sticky;
+    top:0;
+    /* z-index:1; */
+    font-family:Raleway,sans-serif;
+}
+
+
+.custom-button{
+    border:none;
+    border-radius:.25rem;
+    transition-duration: .1s;
+}
+
+.custom-button:hover{
+    transition-duration: .3s;
+}
+
+.page{
+    display:none;
+}
+
+.page.active-page{
+    display:flex;
+}
+
+.image-description{
+    position:relative;
+    margin-top:.5rem;
+}
+
+.image-description>p{
+    position:absolute;
+    /* backdrop-filter:blur(3px) brightness(60%);*/
+    background-color:#023;
+    height:100%;
+    opacity: 0;
+    overflow-y: 0;
+    overflow: hidden;
+    transition: .3s ease-out;
+    width: 100%;
+    bottom:0;
+    margin:0;
+    padding:1rem;
+    border-radius: 1rem;
+}
+
+
+.tag-container{
+    display: flex;
+    row-gap: .25rem;
+    column-gap: .25rem;
+    margin-top:.5rem;
+    flex-wrap: wrap;
+    list-style: none;
+    padding:0;
+}
+
+.tag-container>li{
+    background-color: var(--text);
+    color:var(--darktext);
+    text-shadow: none;
+    padding:0 1rem;
+}
+
+.tag-container>li.dark-tag{
+    /* color: var(--text); */
+    background-color:var(--accent);
+    text-shadow: none;
+    padding:0 1rem;
+}
+
+.projectLink{
+    border: 5px solid transparent;
+    padding:.5rem;
+}
+
+.projectLink:hover{
+    box-shadow: none;
+    transition:.3s background-color;
+    background-color: var(--textTransparent);
+}  
+
+
+.projectLink:hover>.image-description>p{
+    opacity: 1;
+    transition: .3s opacity;
+}
+
+
+.project-title>img{
+    height:2rem;
+    width:2rem;
+    box-shadow: none;
+}
+.project-title>h2{
+    margin:0;
+}

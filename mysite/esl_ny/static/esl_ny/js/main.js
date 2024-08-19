@@ -11,7 +11,7 @@ function initialize(){
 }
 
 function fetchJsonThen(urlString,thenDoThis){
-    const url=(selectLanguage.value)?`/${urlString}/${selectLanguage.value}`:`/${urlString}_all`;
+    const url=(selectLanguage.value)?`${urlString}/${selectLanguage.value}`:`${urlString}_all`;
     let timeThen=performance.now()
     console.log('calling '+urlString)
     fetch(url).then(data=>data.json()).then(data=>{
