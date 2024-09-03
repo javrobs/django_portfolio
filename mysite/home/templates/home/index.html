@@ -22,17 +22,15 @@
                 <div id="menu" class="d-none d-md-flex column-gap-2">
                     <button class="actionLink" onclick="activatePage('projects')" id="tab-projects"><i class="bi bi-terminal"></i>Projects</button>
                     <button class="actionLink" onclick="activatePage('resume')" id="tab-resume"><i class="bi bi-file-earmark-text"></i>Resume</button>
-                    <button class="actionLink" onclick="activatePage('contact')" id="tab-contact"><i class="bi bi-person-vcard"></i>Contact</button>
-                    <button class="actionLink" onclick="activatePage('raq')" id="tab-raq"><i class="bi bi-question-circle"></i>RAQ</button>
+                    <a class="actionLink" href="mailto:javieroblesamar@gmail.com" id="tab-contact"><i class="bi bi-person-vcard"></i>Contact me</a>
                 </div>
             </div>
             <div class="col-12 divider"></div>
         </div>
-        <div id="minimenu" class="collapsible d-md-none flex-column align-items-stretch">
+        <div id="minimenu" class="collapsible d-md-none flex-column align-items-center">
             <button class="actionLink" onclick="activatePageMini('projects')" id="tabmini-projects"><i class="bi bi-terminal"></i>Projects</button>
-            <button class="actionLink" onclick="activatePageMini('resume')" id="tabmini-resume"><i class="bi bi-file-earmark-text"></i>Resume</button>
-            <button class="actionLink" onclick="activatePageMini('contact')" id="tabmini-contact"><i class="bi bi-person-vcard"></i>Contact</button>
-            <button class="actionLink" onclick="activatePageMini('raq')" id="tabmini-raq"><i class="bi bi-question-circle"></i>RAQ</button>
+            <button class="actionLink" onclick="activatePageMini('resume')" id="tabmini-resume" target="_blank"><i class="bi bi-file-earmark-text"></i>Resume</button>
+            <a class="actionLink" href="mailto:javieroblesamar@gmail.com" id="tabmini-contact"><i class="bi bi-person-vcard"></i>Contact me</a>
             <div class="col-12 divider"></div>  
         </div>  
     </header>
@@ -48,9 +46,8 @@
                     <p class='d-none' id='p-2'>I've been coding for two years, in both Python and Javascript. I previously worked as a design engineer in manufacturing in Monterrey, Mexico. Now, I live in Washington DC with my partner.</p>
                     <p class='d-none' id='p-3'>I enjoy working on web projects, complex data analysis, and expanding my skills through tutorials and classes. This page has some of my projects and contact information if you'd like to connect!</p>
                 </div>
-                <div class="d-flex justify-content-center align-items-end column-gap-3 mt-3">
+                <div class="text-center mt-3">
                     <button class="custom-button px-3 py-2" onclick="activatePage('projects')"><i class="bi bi-terminal me-1"></i>See projects</button>
-                    <button class="custom-button px-3 py-2" onclick="activatePage('contact')"><i class="bi bi-person-vcard me-1"></i>Contact me</button>
                 </div>
             </div>
         </div>
@@ -58,101 +55,114 @@
             <div class="col-12">
                 <h1 class="text-center">Projects</h1>
             </div>
-            <a class="col-md-6 mb-2 projectLink" href="https://www.etiquetasana.com/" target="_blank">
-                <div class="d-flex project-title column-gap-2">
+            <div class="col-lg-4 mb-2 projectLink">
+                <a class="d-flex project-title column-gap-2" href="https://www.etiquetasana.com/" target="_blank">
                     <img src="{% static 'home/images/logos/etiquetasana.svg'%}">
                     <h2>Etiqueta Sana</h2>
-                </div>
+                </a>
                 <div class="image-description">
-                    <p>Description</p>
+                    <p>Full-stack web application and content management system for a nutritionist, enabling collaboration on custom meal plans, client-specific recipes, a live food database, progress tracking, and blog management.</p>
                     <img class="project-photo"  src="{% static 'home/images/etiqueta-sqr.jpg' %}">
                 </div>
                 <ul class="tag-container">
                     <li class="dark-tag">Full-Stack Web App</li>
-                    <li>Javascript</li>
+                    <li>Vanilla JS</li>
                     <li>Flask</li>
                     <li>SQLAlchemy</li>
-                    <li>Login</li>
-                    <li>Amazon S3</li>
+                    <li>Flask-Login</li>
+                    <li>AWS S3</li>
                     <li>Email</li>
-                    <li>PythonAnywhere</li>
                     <li>Pillow</li>
                     <li>Bootstrap</li>
                 </ul>
-            </a>
-            <a class="col-md-6 mb-2 projectLink" href="https://javrobs.github.io/house_pricing_analysis/" target="_blank">
-                <div class="d-flex project-title column-gap-2">
+            </div>
+            <div class="col-lg-4 mb-2 projectLink">
+                <a class="d-flex project-title column-gap-2" href="{% url 'esl_ny:esl_ny'%}" target="_blank">
+                    <img src="{% static 'home/images/logos/nycspeakers.png'%}">
+                    <h2>NYC ESL speakers</h2>
+                </a>
+                <div class="image-description">
+                    <p>Sunburst and map visualization of limited english proficiency (LEP) residents of New York City.</p>
+                    <img class="project-photo"  src="{% static 'home/images/nyc-sqr.png'%}">
+                </div>
+                <ul class="tag-container">
+                    <li class="dark-tag">Data Visualization</li>
+                    <li>SQLite</li>
+                    <li>Pandas ETL</li>
+                    <li>Django ORM</li>
+                    <li>API fetch</li>
+                    <li>Plotly Graphs</li>
+                    <li>Leaflet Choropleth</li>
+                    <li>Bootstrap</li>
+                </ul>
+            </div>
+            <div class="col-lg-4 mb-2 projectLink">
+                <a class="d-flex project-title column-gap-2" href="https://javrobs.github.io/house_pricing_analysis/" target="_blank">
                     <img src="{% static 'home/images/logos/austinhouses.png' %}">
                     <h2>Austin Housing</h2>
-                </div>
+                </a>
                 <div class="image-description">
-                    <p>Description</p>
+                    <p>Map visualization of house sale prices in Austin from 2018 to 2021, fed into a linear regression and neural network models for price estimation.</p>
                     <img class="project-photo" src="{% static 'home/images/austin-sqr.jpg' %}">
                 </div>
                 <ul class="tag-container">
                     <li class="dark-tag">Data Visualization</li>
-                    <li>Javascript</li>
                     <li>Flask API</li>
                     <li>Leaflet Map</li>
-                    <li>Neural Network</li>
                     <li>TensorFlow</li>
+                    <li>Neural Network</li>
                     <li>Linear Regression</li>
-                    <li>Pandas</li>
+                    <li>Scikit-learn</li>
+                    <li>Pandas ETL</li>
                     <li>Bootstrap</li>
                 </ul>
-            </a>
-            <a class="col-md-6 mb-2 projectLink" href="{% url 'esl_ny:esl_ny'%}" target="_blank">
-                <div class="d-flex project-title column-gap-2">
-                    <img src="{% static 'home/images/logos/nycspeakers.png'%}">
-                    <h2>NYC ESL speakers</h2>
-                </div>
-                <div class="image-description">
-                    <img class="project-photo"  src="{% static 'home/images/nyc-sqr.jpg'%}">
-                    <p>Description</p>
-                </div>
-                <div class="tag-container">
-                    <li class="dark-tag">Data Visualization</li>
-                    <li>Javascript</li>
-                    <li>Flask API</li>
-                    <li>Plotly Graphs</li>
-                    <li>Pymongo</li>
-                    <li>Bootstrap</li>
-                </div>
-            </a>
-            <a class="col-md-6 mb-2 projectLink">
-                <div class="d-flex project-title column-gap-2">
-                    <h2>NHANES analysis</h2>
-                </div>
-                <div class="image-description">
-                    <img class="project-photo" src="{% static 'home/images/nhanes-sqr.jpg'%}">
-                    <p>Description</p>
-                </div>
-                <div class="tag-container">
-                    <li class="dark-tag">Data Visualization</li>
-                    <li>Javascript</li>
-                    <li>Flask API</li>
-                    <li>SQLAlchemy</li>
-                    <li>Plotly Graphs</li>
-                    <li>Bootstrap</li>
-                </div>
-            </a>
+            </div>
+            <div class="text-center mt-2">
+                <button class="custom-button px-3 py-2" onclick="activatePage('resume')"><i class="bi bi-file-earmark-text me-1"></i>Go to Resume</button>
+            </div>
         </div>
         <div class="row page" id="resume">
-            <div class="col-12 text-center">
-                <h1>Resume</h1>
+            <div class="col-12 d-flex flex-column align-items-center">
+                <h1>Experience with</h1>
             </div>
-        </div>
-        <div class="row page" id="contact">
-            <div class="col-12 text-center">
-                <h1>Contact me</h1>
+            <div class="col-12 col-sm-10 col-sm-9 col-lg-8 m-auto mb-2 d-flex justify-content-center flex-wrap column-gap-2">
+                <ul class="tag-container flex-column flex-grow-1 mb-0">
+                    <li class="dark-tag">Python</li>
+                    <li class="flex-grow-1">Django</li>
+                    <li class="flex-grow-1">Flask</li>
+                    <li class="flex-grow-1">Pandas</li>
+                    <li class="flex-grow-1">Jupyter Notebooks</li>
+                    <li class="flex-grow-1">Matplotlib</li>
+                    <li class="flex-grow-1">Pillow</li>
+                    <li class="flex-grow-1">Boto3</li>
+                    <li class="flex-grow-1">SQLAlchemy</li>
+                </ul>
+                <ul class="tag-container flex-column flex-grow-1">
+                    <li class="dark-tag">Javascript</li>
+                    <li class="flex-grow-1">APIs</li>
+                    <li class="flex-grow-1">Plotly</li>
+                    <li class="flex-grow-1">Leaflet</li>
+                </ul>
+                <ul class="tag-container flex-column flex-grow-1">
+                    <li class="dark-tag">Databases</li>
+                    <li class="flex-grow-1">SQL</li>
+                    <li class="flex-grow-1">Mongo</li>
+                </ul>
+                <ul class="tag-container flex-column flex-grow-1">
+                    <li class="dark-tag">CSS</li>
+                    <li class="flex-grow-1">Flexbox</li>
+                    <li class="flex-grow-1">Animation</li>
+                    <li class="flex-grow-1">Bootstrap</li>
+                    <li class="flex-grow-1">Bootstrap Icons</li>
+                </ul>
+                <ul class="tag-container flex-column flex-grow-1">
+                    <li class="dark-tag">AWS</li>
+                    <li class="flex-grow-1">S3</li>
+                    <li class="flex-grow-1">Cloudfront</li>
+                </ul>
             </div>
-        </div>
-        <div class="row page" id="raq">
-            <div class="col-12 text-center">
-                <h1>Rarely Asked Questions</h1>
-                <p>Background: Aoraki/Mount Cook in New Zealand</p>
-                <p>I want to know more about Roxie: She's 5, she doesn't like toys, she lives with my mom in Monterrey, here are other photos:</p>
-                <span>photo 1, 2,3 </span>
+            <div class="col-12 text-center mt-2">
+                <a class="custom-button d-inline-block px-3 py-2" href="{% static 'home/documents/Resume.docx' %}"><i class="bi bi-file-earmark-text me-2"></i>Download Resume</a>
             </div>
         </div>
     </main>

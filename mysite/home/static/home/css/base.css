@@ -2,7 +2,7 @@
 :root{
     --darktext:#023;
     --darktextlow:#023b;
-    --accent:#fb8525;
+    --accent:#f18023;
     --accentTransparent:#fb852533;
     --text:#e0d4f6;
     --textTransparent:#e0d4f633;
@@ -93,13 +93,14 @@ img#me-and-roxie{
     font-size:larger;
     transition-duration: .3s;    
     background-color: var(--textTransparent);
+    box-shadow: none;
 }
 
-button.actionLink>i{
+.actionLink>i{
     margin-right:.25rem;
 }
 
-i{
+.custom-button{
     text-shadow: none;
 }
 
@@ -200,7 +201,7 @@ header{
 }
 
 
-.tag-container{
+ul.tag-container{
     display: flex;
     row-gap: .25rem;
     column-gap: .25rem;
@@ -208,6 +209,7 @@ header{
     flex-wrap: wrap;
     list-style: none;
     padding:0;
+    margin-bottom: 0;
 }
 
 .tag-container>li{
@@ -218,8 +220,8 @@ header{
 }
 
 .tag-container>li.dark-tag{
-    /* color: var(--text); */
-    background-color:var(--accent);
+    color: var(--text);
+    background-color:var(--darktext);
     text-shadow: none;
     padding:0 1rem;
 }
@@ -241,12 +243,17 @@ header{
     transition: .3s opacity;
 }
 
-
 .project-title>img{
     height:2rem;
     width:2rem;
     box-shadow: none;
 }
+
 .project-title>h2{
     margin:0;
+    text-decoration: underline;
+}
+
+.project-title:hover>h2{
+    color:var(--accent)
 }
