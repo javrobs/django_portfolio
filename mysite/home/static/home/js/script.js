@@ -1,49 +1,77 @@
-const allPages=document.querySelectorAll(".page");
-const collapsed=document.querySelectorAll(".collapsible");
-const minimenuButton=document.getElementById("minimenu-button");
-const icon=minimenuButton.querySelector("i");
+const allPages = () => {
+    const pages = document.querySelectorAll(".page");
+    const activePages = [];
+    return{
+        activatePage(pageId){
+            window.scroll(0,0);
+            pages.forEach(one => {
+                if (one.id === pageId){
+                    one.classList.add("active-page");
+                    if(!activePages.includes(one)){
+                    this.initTagContainers(one);
+                    activePages.push(one);
+                    }
+                } else {
+                    one.classList.remove("active-page");
+                }
+            });
+        },
+        activatePageMini(pageId){
+            this.activatePage(pageId);
+            minimenu.collapseMiniMenu();
+        },
+        initTagContainers(page){
+            console.log('animation added')
+            const tagContainers = [...page.getElementsByClassName("tag-container")].map(each=>each.children);
+            let i=0;
+            function goThroughTagContainers(){
+                if (i<tagContainers.length){
+                    const tagContainer = tagContainers[i];
+                    let j=0;
+                    function goThroughList(){
+                        if(j<tagContainer.length){
+                            tagContainer[j].classList.add("showup");
+                            j++;
+                        } else {
+                            clearInterval(interval2);
+                        }
+                    }
+                    const interval2 = setInterval(goThroughList,150)
+                    i++
+                } else {
+                    clearInterval(interval)
+                }
+            }
+            const interval = setInterval(goThroughTagContainers,300);
+        },
 
+    }
+};
 
-
-function activatePage(pageId){
-    console.log(pageId);
-    allPages.forEach(one=>{
-        console.log(one);
-        if (one.id===pageId){
-            one.classList.add("active-page");
-        } else {
-            one.classList.remove("active-page");
+const minimenu = () => {
+    const collapsed = document.querySelectorAll(".collapsible");
+    const minimenuButton = document.getElementById("minimenu-button");
+    const icon = document.getElementById("mini-menu-icon");
+    return {
+        expandMiniMenu(){ 
+            collapsed.forEach(({classList})=>classList.add("expanded"));
+            minimenuButton.onclick = minimenu.collapseMiniMenu;
+            icon.className="bi bi-chevron-compact-up";
+            console.log("expand",this,minimenuButton.onclick);
+        },
+        collapseMiniMenu(){
+            collapsed.forEach(one=>one.classList.remove("expanded"));
+            minimenuButton.onclick = minimenu.expandMiniMenu;
+            icon.className="bi bi-chevron-compact-down";
+            console.log("collapse",this,minimenuButton.onclick);
         }
-    });
+    }
 }
 
-function expandMiniMenu(){ 
-    collapsed.forEach(one=>{
-        one.classList.add("expanded");
-    });
-    minimenuButton.setAttribute("onclick","collapseMiniMenu();");
-    icon.className="bi bi-chevron-compact-up";
-}
-
-function collapseMiniMenu(){
-    collapsed.forEach(one=>{
-        one.classList.remove("expanded");
-    });
-    minimenuButton.setAttribute("onclick","expandMiniMenu();");
-    icon.className="bi bi-chevron-compact-down";
-}
-
-function activatePageMini(pageId){
-    activatePage(pageId);
-    collapseMiniMenu();
-}
-
-function roxiesWebsite(){
-    document.getElementById('me-and-roxie-photo').classList.add('change-to-roxie');
-}
+minimenu().collapseMiniMenu();
 
 
-let divsToDrop=[['greeting',1.5],['p-1',3],['p-2',3],['p-3',3]];
+const divsToDrop = [['greeting',1.5],['p-1',3],['p-2',3],['p-3',3]];
 startLetterDropper(...divsToDrop[0])
 
 function startLetterDropper(itemID,speed){
@@ -74,7 +102,6 @@ function dropALetter(text,item,speed){
         }
     } else {
         divsToDrop.shift()
-        if(divsToDrop.length)setTimeout(startLetterDropper.bind(this,...divsToDrop[0]),1000);
+        if(divsToDrop.length) setTimeout(startLetterDropper.bind(this,...divsToDrop[0]),1000);
     }
 }
-

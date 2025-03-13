@@ -15,39 +15,39 @@
     <header class="container-fluid">
         <div class="row">
             <div class="col-12 d-flex p-3 justify-content-between align-items-center">
-                <button id="name" onclick="activatePageMini('about-me')">Javier Robles Samar</button>
+                <button id="name" onclick="allPages().activatePageMini('about-me')">Javier Robles Samar</button>
                 <div id="mini-menu" class="d-md-none">
-                    <button class="custom-button" onclick="expandMiniMenu();" id="minimenu-button"><i class="bi bi-chevron-compact-down"></i></button>
+                    <button class="custom-button" id="minimenu-button"><i class="bi bi-chevron-compact-down" id="mini-menu-icon"></i></button>
                 </div>
-                <div id="menu" class="d-none d-md-flex column-gap-2">
-                    <button class="actionLink" onclick="activatePage('projects')" id="tab-projects"><i class="bi bi-terminal"></i>Projects</button>
-                    <button class="actionLink" onclick="activatePage('resume')" id="tab-resume"><i class="bi bi-file-earmark-text"></i>Resume</button>
-                    <a class="actionLink" href="mailto:javieroblesamar@gmail.com" id="tab-contact"><i class="bi bi-person-vcard"></i>Contact me</a>
+                <div id="menu" class="d-none d-md-flex align-items-center column-gap-2">
+                    <button class="actionLink" onclick="allPages().activatePage('projects')" id="tab-projects"><i class="bi bi-terminal"></i>Projects</button>
+                    <button class="actionLink" onclick="allPages().activatePage('resume')" id="tab-resume"><i class="bi bi-file-earmark-text"></i>Resume</button>
+                    <a class="actionLink d-inline-block" href="mailto:javieroblesamar@gmail.com" id="tab-contact"><i class="bi bi-person-vcard"></i>Contact me</a>
                 </div>
             </div>
             <div class="col-12 divider"></div>
         </div>
         <div id="minimenu" class="collapsible d-md-none flex-column align-items-center">
-            <button class="actionLink" onclick="activatePageMini('projects')" id="tabmini-projects"><i class="bi bi-terminal"></i>Projects</button>
-            <button class="actionLink" onclick="activatePageMini('resume')" id="tabmini-resume" target="_blank"><i class="bi bi-file-earmark-text"></i>Resume</button>
+            <button class="actionLink" onclick="allPages().activatePageMini('projects')" id="tabmini-projects"><i class="bi bi-terminal"></i>Projects</button>
+            <button class="actionLink" onclick="allPages().activatePageMini('resume')" id="tabmini-resume" target="_blank"><i class="bi bi-file-earmark-text"></i>Resume</button>
             <a class="actionLink" href="mailto:javieroblesamar@gmail.com" id="tabmini-contact"><i class="bi bi-person-vcard"></i>Contact me</a>
-            <div class="col-12 divider"></div>  
-        </div>  
+            <div class="col-12 divider"></div>
+        </div>
     </header>
-    <main class="container-fluid flex-grow-1 p-3 d-flex flex-column justify-content-center" id="content">
-        <div class="row page active-page" id="about-me">
+    <main class="container-xl flex-grow-1 p-3 d-flex flex-column justify-content-center" id="content">
+        <div class="row page active-page justify-content-center" id="about-me">
             <div class="col-12 col-md-5 col-lg-4 px-3 d-flex justify-content-center align-items-center">
                 <img src="{% static 'home/images/meAndRoxie.jpg' %}" id="me-and-roxie">
             </div>
-            <div class="col-12 mt-3 m-md-0 col-md-7 col-lg-8 px-3 d-flex flex-column justify-content-between">
+            <div class="col-12 col-md-6 mt-3 m-md-0 px-3 d-flex flex-column justify-content-between">
                 <h1 class='d-none' id="greeting">Hi, I'm Javi. Welcome to my portfolio.</h1>
                 <div class="text-container flex-grow-1">
-                    <p class='d-none' id='p-1'>I'm a web developer, data analyst, and amateur cook. (That's my dog, Roxie.)</p>
-                    <p class='d-none' id='p-2'>I've been coding for two years, in both Python and Javascript. I previously worked as a design engineer in manufacturing in Monterrey, Mexico. Now, I live in Washington DC with my partner.</p>
-                    <p class='d-none' id='p-3'>I enjoy working on web projects, complex data analysis, and expanding my skills through tutorials and classes. This page has some of my projects and contact information if you'd like to connect!</p>
+                    <p class='d-none' id='p-1'>I'm a Full-stack developer and data analyst. I graduated as a mechatronics engineer in 2019, then I worked as a manufacturing design engineer in Monterrey, Mexico. Now, I live in Washington DC with my partner.(That's my dog, Roxie, she's this website's icon.)</p>
+                    <p class='d-none' id='p-2'>I started coding in 2022, in both Python and Javascript. I'm always expanding my skills through tutorials, classes and projects. My favorite part of building a web application is creating tools that people find useful and intuitive.</p>
+                    <p class='d-none' id='p-3'>This page has some of my projects and contact information if you'd like to connect!</p>
                 </div>
-                <div class="text-center mt-3">
-                    <button class="custom-button px-3 py-2" onclick="activatePage('projects')"><i class="bi bi-terminal me-1"></i>See projects</button>
+                <div class="text-center my-2">
+                    <button class="custom-button px-3 py-2" onclick="allPages().activatePage('projects')"><i class="bi bi-terminal me-1"></i>See my projects</button>
                 </div>
             </div>
         </div>
@@ -55,35 +55,57 @@
             <div class="col-12">
                 <h1 class="text-center">Projects</h1>
             </div>
-            <div class="col-lg-4 mb-2 projectLink">
+            <div class="col-md-6 mb-2 projectLink">
+                <a class="d-flex project-title column-gap-2" href="https://lavacoco.pythonanywhere.com" target="_blank">
+                    <img src="{% static 'home/images/logos/lavacoco.svg'%}">
+                    <h2>Lavandería Coco<i class="bi bi-cone-striped"></i></h2>
+                </a>
+                <div class="image-description">
+                    <p><i class="bi bi-cone-striped"></i>Under development<i class="bi bi-cone-striped"></i> - Web App for a local laundry service where admin and customers can keep track of orders and handle notifications with WhatsApp API.</p>
+                    <img class="project-photo"  src="{% static 'home/images/lavacoco.png'%}">
+                </div>
+                <ul class="tag-container">
+                    <li class="dark-tag">Full-Stack Web App</li>
+                    <li>React</li>
+                    <li>React Router</li>
+                    <li>Django API, Login and ORM</li>
+                    <li>Webpack</li>
+                    <li>SQLite</li>
+                    <li>Tailwind CSS</li>
+                    <li>Google Font Icons</li>
+                    <li>Plotly Graphs</li>
+                </ul>
+            </div>
+            <div class="col-md-6 mb-2 projectLink">
                 <a class="d-flex project-title column-gap-2" href="https://www.etiquetasana.com/" target="_blank">
                     <img src="{% static 'home/images/logos/etiquetasana.svg'%}">
                     <h2>Etiqueta Sana</h2>
                 </a>
                 <div class="image-description">
                     <p>Full-stack web application and content management system for a nutritionist, enabling collaboration on custom meal plans, client-specific recipes, a live food database, progress tracking, and blog management.</p>
-                    <img class="project-photo"  src="{% static 'home/images/etiqueta-sqr.jpg' %}">
+                    <img class="project-photo" src="{% static 'home/images/etiquetasana.png' %}">
                 </div>
                 <ul class="tag-container">
                     <li class="dark-tag">Full-Stack Web App</li>
-                    <li>Vanilla JS</li>
                     <li>Flask</li>
                     <li>SQLAlchemy</li>
                     <li>Flask-Login</li>
                     <li>AWS S3</li>
                     <li>Email</li>
                     <li>Pillow</li>
+                    <li>Pure JavaScript</li>
+                    <li>Plotly</li>
                     <li>Bootstrap</li>
                 </ul>
             </div>
-            <div class="col-lg-4 mb-2 projectLink">
+            <div class="col-md-6  mb-2 projectLink">
                 <a class="d-flex project-title column-gap-2" href="{% url 'esl_ny:esl_ny'%}" target="_blank">
                     <img src="{% static 'home/images/logos/nycspeakers.png'%}">
                     <h2>NYC ESL speakers</h2>
                 </a>
                 <div class="image-description">
-                    <p>Sunburst and map visualization of limited english proficiency (LEP) residents of New York City.</p>
-                    <img class="project-photo"  src="{% static 'home/images/nyc-sqr.png'%}">
+                    <p>Sunburst and map visualization of limited english proficiency (LEP) residents of New York City. The sunburst and map are dynamic and offer information on LEP demographics for each community district.</p>
+                    <img class="project-photo"  src="{% static 'home/images/nyc.png'%}">
                 </div>
                 <ul class="tag-container">
                     <li class="dark-tag">Data Visualization</li>
@@ -96,14 +118,14 @@
                     <li>Bootstrap</li>
                 </ul>
             </div>
-            <div class="col-lg-4 mb-2 projectLink">
+            <div class="col-md-6 mb-2 projectLink">
                 <a class="d-flex project-title column-gap-2" href="https://javrobs.github.io/house_pricing_analysis/" target="_blank">
                     <img src="{% static 'home/images/logos/austinhouses.png' %}">
                     <h2>Austin Housing</h2>
                 </a>
                 <div class="image-description">
-                    <p>Map visualization of house sale prices in Austin from 2018 to 2021, fed into a linear regression and neural network models for price estimation.</p>
-                    <img class="project-photo" src="{% static 'home/images/austin-sqr.jpg' %}">
+                    <p>Map visualization of house sale prices in Austin from 2018 to 2021 with filtering capabilities, fed into a linear regression and neural network models for price estimation.</p>
+                    <img class="project-photo" src="{% static 'home/images/austin.png' %}">
                 </div>
                 <ul class="tag-container">
                     <li class="dark-tag">Data Visualization</li>
@@ -117,8 +139,8 @@
                     <li>Bootstrap</li>
                 </ul>
             </div>
-            <div class="text-center mt-2">
-                <button class="custom-button px-3 py-2" onclick="activatePage('resume')"><i class="bi bi-file-earmark-text me-1"></i>Go to Resume</button>
+            <div class="text-center my-2">
+                <button class="custom-button px-3 py-2" onclick="allPages().activatePage('resume')"><i class="bi bi-file-earmark-text me-1"></i>Go to Resume</button>
             </div>
         </div>
         <div class="row page" id="resume">
@@ -136,33 +158,52 @@
                     <li class="flex-grow-1">Pillow</li>
                     <li class="flex-grow-1">Boto3</li>
                     <li class="flex-grow-1">SQLAlchemy</li>
+                    <li class="flex-grow-1">Pymongo</li>
+                    <li class="flex-grow-1">TensorFlow</li>
+                    <li class="flex-grow-1">Scikit-learn</li>
                 </ul>
                 <ul class="tag-container flex-column flex-grow-1">
                     <li class="dark-tag">Javascript</li>
+                    <li class="flex-grow-1">React</li>
+                    <li class="flex-grow-1">React Router</li>
                     <li class="flex-grow-1">APIs</li>
                     <li class="flex-grow-1">Plotly</li>
                     <li class="flex-grow-1">Leaflet</li>
+                    <li class="flex-grow-1">Webpack</li>
                 </ul>
                 <ul class="tag-container flex-column flex-grow-1">
                     <li class="dark-tag">Databases</li>
                     <li class="flex-grow-1">SQL</li>
                     <li class="flex-grow-1">Mongo</li>
+                    <li class="flex-grow-1">Google Firebase</li>
                 </ul>
                 <ul class="tag-container flex-column flex-grow-1">
                     <li class="dark-tag">CSS</li>
-                    <li class="flex-grow-1">Flexbox</li>
-                    <li class="flex-grow-1">Animation</li>
                     <li class="flex-grow-1">Bootstrap</li>
+                    <li class="flex-grow-1">Tailwind CSS</li>
                     <li class="flex-grow-1">Bootstrap Icons</li>
+                    <li class="flex-grow-1">Google Icons</li>
+                    <li class="flex-grow-1">Flexbox</li>
+                    <li class="flex-grow-1">Grid</li>
+                    <li class="flex-grow-1">Animation</li>
                 </ul>
                 <ul class="tag-container flex-column flex-grow-1">
                     <li class="dark-tag">AWS</li>
-                    <li class="flex-grow-1">S3</li>
+                    <li class="flex-grow-1">Storage (S3)</li>
+                    <li class="flex-grow-1">Email service (SES)</li>
                     <li class="flex-grow-1">Cloudfront</li>
                 </ul>
+                <ul class="tag-container flex-column flex-grow-1">
+                    <li class="dark-tag">Data analysis</li>
+                    <li class="flex-grow-1">Tableau</li>
+                    <li class="flex-grow-1">Power BI</li>
+                    <li class="flex-grow-1">Excel</li>
+                </ul>
             </div>
-            <div class="col-12 text-center mt-2">
-                <a class="custom-button d-inline-block px-3 py-2" href="{% static 'home/documents/Resume.docx' %}"><i class="bi bi-file-earmark-text me-2"></i>Download Resume</a>
+            <div class="col-12 d-flex align-items-center justify-content-center gap-2 my-2">
+                Download my resume:
+                <a class="custom-button d-inline-block p-1 fs-4" href="{% static 'home/documents/Resume.docx' %}" target="_blank"><i class="bi bi-filetype-docx"></i></a>
+                <a class="custom-button d-inline-block p-1 fs-4" href="{% static 'home/documents/Resume.pdf' %}" target="_blank"><i class="bi bi-filetype-pdf"></i></a>
             </div>
         </div>
     </main>
@@ -178,15 +219,8 @@
                     <a class="custom-button m-1 text-center py-1 px-2" href="https://github.com/javrobs" target="_blank"><i class="bi bi-github"></i></a>
                 </div>
             </div>
-            <!-- <div class="col-12 col-md-6 my-2">
-                <span>
-                    <i class="bi bi-image me-1"></i>Background by<br>
-                    <a target="_blank" href="https://unsplash.com/es/@aryncreativestudio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Aaron Andary</a> on <a href="https://unsplash.com/es/fotos/fotografia-de-cielo-azul-afHVU5hBqnw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" target="_blank">Unsplash</a>
-                </span>
-            </div> -->
         </div>
     </footer>
-    <!-- <div style="position: fixed;"></div> -->
 </body>
 <script src="{% static 'home/js/script.js'%}"></script>
 </html>
