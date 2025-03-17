@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root{
     --hue1:230;
@@ -10,36 +13,46 @@
     --textTransparent:hsla(var(--hue1), 65%, 90%, 20%);
 }
 
-
-
 @font-face {
     font-family: Raleway;
-    src: url(../fonts/Raleway-VariableFont_wght.ttf);
+    src: url(/static/home/fonts/Raleway-VariableFont_wght.ttf);
 }
 
 @font-face {
     font-family: Manrope;
-    src: url(../fonts/Manrope-VariableFont_wght.ttf) format("truetype"),
-        url(../fonts/Manrope-VariableFont_wght.ttf) format("truetype-variations");
+    src: url(/static/home/fonts/Manrope-VariableFont_wght.ttf) format("truetype"),
+        url(/static/home/fonts/Manrope-VariableFont_wght.ttf) format("truetype-variations");
     font-weight: 100 1000;
 }
 
+html{
+    max-height:100dvh;
+    overflow-y: hidden;
+}
+
+#root{
+    flex-direction:column;
+    height:100dvh;
+    scrollbar-width:none;
+    overflow-y: auto;
+}
+
 body{
-    min-height: 100dvh;
-    font-family: Manrope,sans-serif;
-    color:var(--text);
-    background-color: var(--darktext);
-    background-size: cover;
-    background-position: 50%;
-    background-attachment: fixed;
+    @apply bg-primary text-primaryLight flex flex-col overflow-x-hidden min-h-dvh -z-10;
+    font-family: Manrope,Tahoma, Geneva, Verdana, sans-serif;
     text-shadow: 1px 1px var(--darktextlow);
+    
+}
+
+main{
+    scrollbar-width:none;
 }
 
 body::before{
     content:"";
     z-index: -2;
     position:fixed;
-    background:url(../images/background-3.jpg);
+    background:url(/static/home/images/background-3.jpg);
     height:100dvh;
     background-size: cover;
     top:0;
@@ -54,43 +67,23 @@ body::after{
     background-color: #0129;
     height:100dvh;
     width:100%;
+    backdrop-filter: blur(1px);
+}
+
+.text-shadow-none{
+    text-shadow: none;
 }
 
 
-button{
-    background-color: unset;
-    border:unset;
-    color:unset;
-}
 
-a{
-    color:unset;
-    text-decoration: none;
-    border-radius: .25rem;
-}
+/* 
+
+
 
 a:hover,a:active{
     box-shadow: 0 0 0 5px var(--accentTransparent);
 }
 
-#name{
-    font-size:1.5rem;
-    transition-duration: .1s;
-    text-decoration: none;
-    font-family: Manrope;
-    cursor:pointer;
-    color:var(--accent);
-    font-weight: 600;
-    border-radius: .25rem;
-    padding:.5rem;
-}
-
-#name:hover{
-    font-weight: 400;
-    background-color: var(--accentTransparent);
-    font-size:2rem;
-    transition-duration: .3s;
-}
 
 
 img{
@@ -99,10 +92,6 @@ img{
     max-width:100%;
 }
 
-img#me-and-roxie{
-    max-height: 400px;
-    box-shadow: .15rem .15rem .25rem #000A;
-}
 
 .actionLink{
     padding:.5rem;
@@ -149,12 +138,6 @@ h1,#name{
     text-shadow: none;
 }
 
-.custom-button:hover{
-    transition-duration: .3s;
-    box-shadow:0 0 0 .5rem var(--accentTransparent);
-    background-color: var(--accent);
-    /* color:var(--text); */
-}
 
 header,footer{
     background-color: var(--darktextlow);
@@ -180,7 +163,7 @@ footer{
 header{
     position:sticky;
     top:0;
-    /* z-index:1; */
+    /* z-index:1;
     font-family:Raleway,sans-serif;
 }
 
@@ -209,7 +192,7 @@ header{
 
 .image-description>p{
     position:absolute;
-    /* backdrop-filter:blur(3px) brightness(60%);*/
+    /* backdrop-filter:blur(3px) brightness(60%)
     background-color:var(--darktext);
     height:100%;
     opacity: 0;
@@ -291,7 +274,6 @@ ul.tag-container{
     width:2rem;
     box-shadow: none;
 }
-
 .project-title>h2{
     margin:0;
     text-decoration: underline;
@@ -299,6 +281,4 @@ ul.tag-container{
 
 .project-title:hover>h2{
     color:var(--accent)
-}
-
-
+} */
