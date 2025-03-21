@@ -46,9 +46,9 @@ const Header = ({refs}) => {
                 animate={{rotate:showMiniMenu?180:0}} 
                 transition={{visualDuration:.5}} 
                 className="h-7 w-7 md:hidden"
-                onClick={()=>setShowMiniMenu(oldValue=>!oldValue)}>
-                    <IconBootstrap icon="chevron-compact-down"/>
-            </MotionButton>
+                icon="chevron-compact-down"
+                onClick={()=>setShowMiniMenu(oldValue=>!oldValue)}
+            />
             <div id="menu" className="hidden md:flex items-center gap-x-3">
                 <MenuOptions/>
             </div>

@@ -1,6 +1,5 @@
 
 import React from "react";
-import IconBootstrap from "./IconBootstrap.jsx";
 import Button from "./Button.jsx";
 
 const Footer = () => {
@@ -11,9 +10,9 @@ const Footer = () => {
         
         <div className="flex justify-center gap-2">
             <p>Let's keep in touch:</p>
-            <a href="https://www.linkedin.com/in/javier-robles-samar/"  target="_blank"><Button className="h-7 w-7"><IconBootstrap icon="linkedin"/></Button></a>
-            <a href="mailto:javieroblesamar@gmail.com"><Button className="h-7 w-7"><IconBootstrap icon="envelope"/></Button></a>
-            <a href="https://github.com/javrobs" target="_blank"><Button className="h-7 w-7"><IconBootstrap icon="github"/></Button></a>
+            <a href="https://www.linkedin.com/in/javier-robles-samar/"  target="_blank"><Button className="h-7 w-7" icon="linkedin"/></a>
+            <a href="mailto:javieroblesamar@gmail.com"><Button className="h-7 w-7" icon="envelope"/></a>
+            <a href="https://github.com/javrobs" target="_blank"><Button className="h-7 w-7" icon="github"/></a>
         </div>
     </footer>
 }

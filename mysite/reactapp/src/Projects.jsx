@@ -4,7 +4,6 @@ import { fadeUpChild, fadeUpContainer} from "./animations.js";
 import { motion } from "motion/react";
 import Tile from "./Tile.jsx";
 import H1Title from "./H1Title.jsx";
-import IconBootstrap from "./IconBootstrap.jsx";
 import Button from "./Button.jsx";
 
 const Projects = ({ref}) => {
@@ -56,9 +55,9 @@ const Projects = ({ref}) => {
             <div className="flex items-center gap-2 min-h-12 column-gap-2">
                 <img className="h-10" src={"/static/home/images/logos/" + logo}/>
                 <h2 className="text-3xl">{title}</h2>
-                <Button className="h-8 w-8 ms-auto" onClick={decreaseImage}><IconBootstrap icon="arrow-left"/></Button>
-                <Button className="h-8 w-8" onClick={increaseImage}><IconBootstrap icon="arrow-right"/></Button>
-                <a href={linkToProject} target="_blank"><Button className="h-8 w-8"><IconBootstrap icon="link"/></Button></a>
+                <Button className="h-8 w-8 ms-auto" onClick={decreaseImage} icon="arrow-left"/>
+                <Button className="h-8 w-8" onClick={increaseImage} icon="arrow-right"/>
+                <a href={linkToProject} target="_blank"><Button className="h-8 w-8" icon="link"/></a>
             </div>
             <div className="relative group rounded-lg shadow-md overflow-hidden">
                 <motion.div animate={{translateX:`${-100*image}%`}} transition={{type:"tween", duration:".5"}} className="flex">

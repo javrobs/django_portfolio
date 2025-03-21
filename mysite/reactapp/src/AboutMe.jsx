@@ -15,7 +15,7 @@ const AboutMe = ({ref}) => {
             <div className="col-span-12 px-4 md:col-start-7 lg:col-start-6 md:col-end-12 gap-3 m-md-0 flex flex-col self-center">
                 <H1Title className='text-start text-5xl'>Hi, I'm Javi,<br/> Welcome to my portfolio.</H1Title>
                 <motion.div {...fadeUpChild}>I'm a freelance full stack Python developer and data analyst. I graduated as a mechatronics engineer in 2019, then I worked as a manufacturing design engineer in Monterrey, Mexico. Now, I live in Washington DC with my partner. (That's my dog, Roxie, she's this website's icon.)</motion.div>
-                <motion.div {...fadeUpChild}>I've been coding everyday since 2022, in both Python and Javascript. I'm always expanding my skills through projects. My favorite part of building a web application is creating tools that people find useful and intuitive.</motion.div>
+                <motion.div {...fadeUpChild}>I've been coding every day since 2022, in both Python and Javascript. I'm always expanding my skills through new projects. My favorite part of building a web application is creating tools that people find useful and intuitive.</motion.div>
                 <motion.div {...fadeUpChild}>This page has some of my projects and contact information if you'd like to connect!</motion.div>
             </div>
         </div>
