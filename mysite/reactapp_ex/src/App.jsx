@@ -7,7 +7,7 @@ import Login from "./routes/Login.jsx"
 import Workouts from "./routes/Workouts.jsx"
 import RepsAndWeight from "./routes/RepsAndWeight.jsx"
 import { RouterProvider, createBrowserRouter } from "react-router"
-import { getFetcher } from "./utils/fetcher.js"
+import { getFetcher, postFetcher } from "./utils/fetcher.js"
 import CreateWorkout from "./routes/CreateWorkout.jsx"
 
 export const userContext = createContext();
@@ -27,6 +27,15 @@ export default function App() {
         console.log(data)
     }
 
+    async function logoutUser() {
+        const data = await postFetcher("/exercisapp/api/login/logout_user/")
+        if(data.success){
+            location = "/exercisapp/";
+        } else {
+            setError(data);
+        }
+    }  
+
 
     const router = createBrowserRouter([
         {
@@ -45,7 +54,7 @@ export default function App() {
         }
     ])
 
-    return init?<userContext.Provider value={{...user,refreshFunction:getUserInfo,error:error,setError:setError}}>
+    return init?<userContext.Provider value={{...user,refreshFunction:getUserInfo,logoutUser:logoutUser,error:error,setError:setError}}>
         <RouterProvider router={router}/>
     </userContext.Provider>:<div>Loading...</div> 
 }

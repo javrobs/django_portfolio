@@ -6,24 +6,12 @@ import { MotionButton } from "./Button.jsx";
 import { Link, useNavigate } from "react-router";
 import Icon from "./Icon.jsx"
 import { userContext } from "../App.jsx";
-import { postFetcher } from "../utils/fetcher.js";
 
 const Header = () => {
 
     const [showMiniMenu,setShowMiniMenu] = useState(false);
     const headerRef = useRef(null);
-    const {logged_in,setError,refreshFunction} = useContext(userContext);
-    const nav = useNavigate();
-
-    async function logoutUser() {
-        const data = await postFetcher("/exercisapp/api/login/logout_user/")
-        if(data.success){
-            refreshFunction().then(()=>nav('/exercisapp/'))
-        } else {
-            setError(data);
-        }
-    }  
-
+    const {logged_in,logoutUser} = useContext(userContext);
 
     const MenuOptions = [
     ].concat(logged_in?[
