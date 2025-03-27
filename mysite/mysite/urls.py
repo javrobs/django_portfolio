@@ -21,4 +21,5 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     path('',include('home.urls')),
     path('nyc_lep_speakers/',include('esl_ny.urls')),
+    path('exercisapp/',include('exercisapp.urls')),
 ]

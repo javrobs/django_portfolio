@@ -1,0 +1,27 @@
+﻿name,muscle,lower,higher,bar
+Bench press,Chest,6,10,1
+Incline bench press,Chest,6,10,1
+Decline bench press,Chest,6,10,1
+Standing cable chest fly,Chest,8,12,0
+Standing cable chest fly down,Chest,8,12,0
+Shoulder press seated w/ dumbbell,Shoulders.Traps,8,12,0
+Lateral raise w/dumbbell,Shoulders,12,15,0
+Lateral raise w/cable,Shoulders,12,15,0
+Diagonal shoulder raise w/cable,Shoulders,12,15,0
+Lat pulldown w/close grip,Back.Lats,8,12,0
+Lat pulldown w/wide grip,Back.Lats,8,12,0
+Bicep curl w/z bar,Biceps,8,12,0
+Preacher curl w/z bar,Biceps,8,12,0
+Double hammer curl w/dumbbell,Biceps,12,15,0
+Bayesian curl,Biceps,15,20,0
+Seated row w/close grip,Back,8,12,0
+Machine row w/neutral grip,Back,6,10,0
+Tricep pushdown w/close grip,Tricep,8,12,0
+Overhead Tricep extension w/rope,Tricep,8,12,0
+Squat,Quads.Glutes,6,10,1
+Leg extension,Quads,12,15,0
+Deadlift,Hamstrings.Back,8,12,1
+Romanian Deadlift,Hamstrings.Glutes,8,12,1
+Seated leg curl,Hamstrings,8,12,0
+Cable crunch,Abs,12,15,0
+Standing calf raise,Calves,15,20,0

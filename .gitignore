@@ -169,4 +169,8 @@ node_modules/
 *.code-workspace
 mainreact.js
 mainreact.js.LICENSE.txt
-*settings.py
+settings.py
+*.sqlite3
+mysite/never_delete_pre_workout_app.sqlite3
+main.js
+main.js.LICENSE.txt
