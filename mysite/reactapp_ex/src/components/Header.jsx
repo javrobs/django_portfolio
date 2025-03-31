@@ -6,6 +6,7 @@ import { MotionButton } from "./Button.jsx";
 import { Link, useNavigate } from "react-router";
 import Icon from "./Icon.jsx"
 import { userContext } from "../App.jsx";
+import Button from "./Button.jsx";
 
 const Header = () => {
 
@@ -14,32 +15,34 @@ const Header = () => {
     const {logged_in,logoutUser} = useContext(userContext);
 
     const MenuOptions = [
+        {url:"/exercisapp/", text:"Home"}
     ].concat(logged_in?[
         {url:"/exercisapp/workouts", text:"Workouts"},
     ]:[]).map(each=>{
         return <Link 
             key={each.url}
             to={each.url}
-            className="flex gap-1 items-center h-8 justify-center transition-all hover:text-xl hover:bg-secondaryTransparent hover:text-secondary p-1 px-2 rounded-md">
+            className="flex gap-1 items-center h-7 justify-center transition-all hover:text-xl hover:bg-secondaryTransparent hover:text-secondary p-1 px-2 rounded-md">
                 {each.text}
         </Link>
     })
 
-    MenuOptions.push(
-        logged_in?
-        <button 
+    const LoginOption = () => logged_in?
+        <Button 
+            icon="account_circle"
+            type="google"
             onClick={logoutUser}
-            key="logout"
-            className="flex gap-1 items-center h-8 justify-center transition-all hover:text-xl hover:bg-secondaryTransparent hover:text-secondary p-1 px-2 rounded-md">
+            className="h-7 transition-all hover:text-xl">
                 Log out
-        </button>:
-        <Link 
-            key="login"
-            to="/exercisapp/login"
-            className="flex gap-1 items-center h-8 justify-center transition-all hover:text-xl hover:bg-secondaryTransparent hover:text-secondary p-1 px-2 rounded-md">
+        </Button>:
+        <Link to="/exercisapp/login">
+            <Button 
+            icon="account_circle"
+            type="google"
+            className="h-7 transition-all hover:text-xl">
                 Log in
+            </Button>
         </Link>
-    )
 
     useEffect(()=>{
         function checkClick(e){
@@ -66,6 +69,7 @@ const Header = () => {
                         <span className="max-sm:hidden font-racing">UnnamedApp</span><Icon icon="fitness_center"/>
                 </motion.button>
             </Link>
+            <div className="flex gap-x-3">
             <MotionButton
                 animate={{rotate:showMiniMenu?180:0}} 
                 transition={{visualDuration:.5}} 
@@ -75,6 +79,8 @@ const Header = () => {
             />
             <div id="menu" className="hidden md:flex items-center gap-x-3">
                 {MenuOptions}
+            </div>
+            <LoginOption/>
             </div>
         </div>
         <AnimatePresence>

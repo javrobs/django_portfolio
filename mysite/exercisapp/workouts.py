@@ -33,44 +33,62 @@ def end_session(request):
 def reps_weights(request,order_id):
     try:
         json_data = load(request.body)
-        print(json_data)
-        
         with transaction.atomic():
-            if json_data.get("session"):
-                session = Session.objects.get(id=json_data.get("session"))
+            session = Session.objects.get(id=json_data.get("session"))
+            if session != Session.current_session(request.user):
+                raise Exception("Session error, maybe stale?")
+            session_workout,created = session.session_workout_set.get_or_create(exercise_id=json_data["exercise_id"])
+            last_session = Session_workout.objects.exclude(id=session_workout.id).filter(session__user=request.user,exercise_id=json_data["exercise_id"]).order_by("-session__created_at").first()
+            if created and last_session:
+                session_workout.step = last_session.step
+                session_workout.units_kg = last_session.units_kg
+                session_workout.weight_per_side = last_session.weight_per_side
+                session_workout.save()
+            operation = json_data.get("operation")
+            if operation in ["units", "side", "step"]:
+                match operation:
+                    case "units":
+                        session_workout.units_kg = True if json_data["value"] == "kgs" else False
+                    case "side":
+                        session_workout.weight_per_side = True if json_data["value"] == "perside" else False
+                    case "step":
+                        session_workout.step = json_data["value"] or None
+                session_workout.save()
             else:
-                current_workout = Workouts_in_plan.current_workout(request.user)
-                session = Session(user=request.user,workout_performed=current_workout["workout"])
-                session.save()
-            session_workout,created = Session_workout.objects.get_or_create(exercise_id=json_data["exercise_id"],session=session)
-            if json_data.get("units"):
-                session_workout.units_kg = True if json_data.get("units") == "kgs" else False
-                session_workout.save()
-                return loader_reps_weights(request,order_id)
-            if json_data.get("side"):
-                session_workout.weight_per_side = True if json_data.get("side") == "perside" else False
-                session_workout.save()
-                return loader_reps_weights(request,order_id)
-            record,created = Reps_and_weights.objects.get_or_create(
-                set=json_data["set"],
-                session_workout=session_workout
-            )
-            if json_data.get("weight") != None:
-                record.weight = json_data.get("weight") or 0
-            elif json_data.get("difficulty"):
-                record.difficulty = json_data.get("difficulty")
-            elif json_data.get("reps"):
-                record.reps = json_data.get("reps")
-            elif json_data.get("warmup"):
-                record.is_warmup = record.is_warmup == False
-                if record.is_warmup == False:
-                    max_sets = Exercise_in_program.objects.filter(exercise_id=json_data["exercise_id"],workout=session.workout_performed).first().sets
-                    print(max_sets)
-                    rep_to_delete = Reps_and_weights.objects.filter(set__gt=max_sets,session_workout=session_workout).order_by("-set").first()
-                    if rep_to_delete:
-                        rep_to_delete.delete()
-        record.save()
-        return loader_reps_weights(request,order_id)
+                record,created = session_workout.reps_and_weights_set.get_or_create(set=json_data["set"])
+                match operation:
+                    case "weight":
+                        record.weight = json_data["value"] or None
+                    case "increase":
+                        record.weight += session_workout.step
+                    case "decrease":
+                        record.weight -= session_workout.step
+                    case "clone":
+                        last_set = session_workout.reps_and_weights_set.get(set=json_data["set"]-1)
+                        record.weight = last_set.weight
+                        record.reps = last_set.reps
+                        record.is_warmup = last_set.is_warmup
+                        record.difficulty = last_set.difficulty
+                    case "copyLast":
+                        last_set = last_session.reps_and_weights_set.get(set=json_data["set"])
+                        record.weight = last_set.weight
+                        record.reps = last_set.reps
+                        record.is_warmup = last_set.is_warmup
+                        record.difficulty = last_set.difficulty
+                    case "difficulty":
+                        record.difficulty = json_data["value"] if record.difficulty != json_data["value"] else None
+                    case "reps":
+                        record.reps = json_data["value"] if record.reps != json_data["value"] else None
+                    case "warmup":
+                        record.is_warmup = record.is_warmup == False
+                        if record.is_warmup == False:
+                            max_sets = Exercise_in_program.objects.filter(exercise_id=json_data["exercise_id"],workout=session.workout_performed).first().sets
+                            rep_to_delete = Reps_and_weights.objects.filter(set__gt=max_sets,session_workout=session_workout).order_by("-set").first()
+                            if rep_to_delete:
+                                rep_to_delete.delete()
+                record.save()
+            session_data = session_workout.get_session_reps()
+            return JsonResponse({"currentState":session_data[0],"workoutSessionInfo":session_data[1]})
     except Exception as e:
         print(e)
         return JsonResponse({"message":str(e)},status=500)

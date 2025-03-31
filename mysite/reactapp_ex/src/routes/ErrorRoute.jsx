@@ -6,24 +6,20 @@ import MainContainer from "../components/MainContainer.jsx";
 import BubbleDiv from "../components/BubbleDiv.jsx";
 
 const ErrorComponent = () => {
-    const [showError,setShowError] = useState(false);
     const error = useRouteError();
 
     function goBack(){
         history.back();
     }
 
-    function toggleShowError(){
-        setShowError(value=>!value);
-    }
+    console.log(error)
 
     return <>
         <MainContainer size="sm">
-            <BubbleDiv maxititle="Algo salió mal?">
-            <p>Hubo un error pero nadie sabe <span onClick={toggleShowError} className="hover:text-blue-500 cursor-pointer">cual</span> es.</p>
-            <Button onClick={goBack}>Regresar<Icon icon='undo'/></Button>
+            <BubbleDiv title="Something went wrong :(">
+            <p>Not entirely sure what happened, but it's fine. Please go back</p>
+            <Button onClick={goBack}>Return<Icon icon='undo'/></Button>
             </BubbleDiv>
-            
         </MainContainer>
     </>
 }

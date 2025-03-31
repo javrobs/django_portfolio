@@ -56,7 +56,13 @@ class Exercise_in_program(models.Model):
         return f"Workout program #{self.id}: {self.exercise.name} "
     
     def completed_sets(self,session):
-        return Session_workout.objects.filter(exercise=self.exercise,session=session).aggregate(count=Count("reps_and_weights",filter=Q(reps_and_weights__is_warmup=False)&Q(reps_and_weights__weight__gt=0)))["count"]
+        
+        return (Session_workout.objects
+                .filter(exercise=self.exercise,session=session)
+                .aggregate(
+                    count=Count("reps_and_weights",
+                        filter=Q(reps_and_weights__is_warmup = False) & Q(reps_and_weights__weight__gt = 0))
+                )["count"] if session else 00)
  
 class Session(models.Model):
     workout_performed = models.ForeignKey(Workout, on_delete=models.SET_NULL, null=True, blank=True)
@@ -64,10 +70,28 @@ class Session(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     finished = models.BooleanField(default=False)
 
+    @staticmethod
+    def current_session(user):
+        six_hours_ago = timezone.now()-timezone.timedelta(hours=6)
+        return Session.objects.annotate(sets_count=Count("session_workout__reps_and_weights")).filter(Q(session_workout__reps_and_weights__created_at__gt = six_hours_ago)|(Q(sets_count=0)&Q(created_at__gt = six_hours_ago)),user=user,finished=False).order_by("-created_at").first()
+        
     def next(self,exclude):
-        print("-"*15)
-        exercises = [int(each.order) for each in self.workout_performed.exercise_in_program_set.exclude(order=exclude).order_by("order").all() if each.sets > self.session_workout_set.filter(exercise_id=each.exercise_id).aggregate(count=Count("reps_and_weights",filter=Q(reps_and_weights__is_warmup=False)&Q(reps_and_weights__weight__gt=0)))["count"]]        
-        return exercises
+        exercises = [int(each.order) for 
+                     each in self.workout_performed.exercise_in_program_set.exclude(order = exclude).order_by("order").all() 
+                     if each.sets > 
+                        (self.session_workout_set
+                            .filter(exercise_id = each.exercise_id)
+                            .aggregate(
+                            count=Count(
+                                "reps_and_weights",
+                                filter =
+                                    Q(reps_and_weights__is_warmup = False) &
+                                    Q(reps_and_weights__weight__gt = 0)
+                                )
+                        )["count"])]
+        return exercises[0] if len(exercises) else None
+    
+
 
 class Session_workout(models.Model):
     step = models.DecimalField(decimal_places=1, max_digits=3, blank=True, null=True)
@@ -75,6 +99,20 @@ class Session_workout(models.Model):
     weight_per_side = models.BooleanField(blank=True, null=True)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id} {self.session.user.get_full_name()}'s {self.exercise.name}"
+
+    def get_session_reps(self):
+        return [{int(e.set):{
+            "weight":float(e.weight or 0),
+            "difficulty":int(e.difficulty or 0),
+            "reps":int(e.reps or 0),
+            "warmup":e.is_warmup} for e in self.reps_and_weights_set.all()},
+            {"id":self.id,
+            "step":self.step,
+            "uses_kilos":self.units_kg, 
+            "per_side":self.weight_per_side}]
 
 class Reps_and_weights(models.Model):
     weight = models.DecimalField(decimal_places=1, max_digits=4, blank=True, null=True)
@@ -99,19 +137,14 @@ class Workouts_in_plan(models.Model):
     @staticmethod
     def current_workout(user):
         workouts = Workouts_in_plan.objects.filter(user=user)
-        last_rep_recorded = Reps_and_weights.objects.filter(session_workout__session__user=user,session_workout__session__workout_performed__in=[w.workout for w in workouts.all()]).order_by("-created_at").first()
+        last_rep_recorded = Reps_and_weights.objects.filter(session_workout__session__user=user,session_workout__session__workout_performed__workouts_in_plan__in=workouts).order_by("-created_at").first()
         if not last_rep_recorded:
-            return {"workout":workouts.order_by("order").first().workout}
-        last_session = last_rep_recorded.session_workout.session
-        workout = last_session.workout_performed
+            return workouts.order_by("order").first().workout
+        session_of_last_rep = last_rep_recorded.session_workout.session
+        workout = session_of_last_rep.workout_performed
+        current_session = Session.current_session(user)
         print(model_to_dict(workout))
-        if timezone.now() - last_rep_recorded.created_at > timezone.timedelta(hours=6):
+        if not current_session or current_session != session_of_last_rep:
             order = workouts.get(workout=workout).order
-            match_order_workout = workouts.get(order=1 if order == workouts.count() else order+1)
-            print(model_to_dict(match_order_workout))
-            print()
-            return {"workout":workouts.get(order=1 if order == workouts.count() else order+1).workout}
-        return {"session":last_session,"workout":workout}
-
-
-    
+            return workouts.get(order=1 if order == workouts.count() else order+1).workout
+        return workout
