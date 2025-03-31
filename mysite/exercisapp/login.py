@@ -19,10 +19,10 @@ def load_user(request):
 def login_user(request):
     try:
         json_data = json.loads(request.body)
-        if not User.objects.filter(username = json_data['username']).exists():
+        if not User.objects.filter(username = json_data['username'].lower().strip()).exists():
             tag="username"
             raise Exception("The user was not found")
-        user = authenticate(request, username = json_data['username'], password = json_data['password'])
+        user = authenticate(request, username = json_data['username'].lower().strip(), password = json_data['password'])
         if not user:
             tag="password"
             raise Exception("The password is incorrect")
@@ -40,13 +40,20 @@ def signup(request):
         tag = False
         json_data = json.loads(request.body)
         with transaction.atomic():
-            if User.objects.filter(username = json_data["username"]).exists():
+            new_username = json_data["username"].lower().strip()
+            if User.objects.filter(username = new_username).exists():
                 tag = "username"
                 raise Exception(f"This user already exists")
-            user = User(username=json_data["username"]) 
-            if len(json_data.get("password")) < 8 or len(json_data.get("password")) > 20 or json_data.get("password2") != json_data['password']:
+            user = User(username=new_username) 
+            if len(json_data.get("password")) < 8:
                 tag = "password"
-                raise Exception(f"Password error")
+                raise Exception(f"Too short")
+            if len(json_data.get("password")) > 20:
+                tag = "password"
+                raise Exception(f"Too long")
+            if json_data.get("password2") != json_data['password']:
+                tag = "password2"
+                raise Exception(f"Passwords don't match")
             user.set_password(json_data['password'])
             for key in ["first_name","last_name"]:
                 name = json_data.get(key)
