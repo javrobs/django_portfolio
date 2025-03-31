@@ -64,6 +64,19 @@ const RepsAndWeight = () => {
         updateState(set,{reps:value});
     }
 
+    async function endWorkout(e){
+        const {success,...freshState} = await postFetcher(
+            `/exercisapp/api/end_session/`,
+            {});
+        console.log("updated",success)
+        if(success){
+            nav("/exercisapp/");
+        } else{
+            setError({tag:freshState.tag||false,message:freshState.message||"Unknown error, didn't save"})
+        }
+    }
+
+
     async function updateState(set,passBody){
         const {success,...freshState} = await postFetcher(
             `/exercisapp/api/set_rep_weight/${orderID}/`,
@@ -155,9 +168,9 @@ const RepsAndWeight = () => {
             <ListOfCols>
             {sets}
             </ListOfCols>
-            {load.next[0]?
-                <Button onClick={goToNext}>Next!</Button>:
-                <div>This is the end of your workout!</div>
+            {load.next?
+                <Link className="w-full flex flex-col" to={`/exercisapp/today/${load.next}`}><Button>Next!</Button></Link>:
+                <Button onClick={endWorkout}>Finish workout!</Button>
             }
         </BubbleDiv>
     </MainContainer>

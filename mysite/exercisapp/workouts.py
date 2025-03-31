@@ -7,6 +7,28 @@ from django.forms.models import model_to_dict
 from json import loads as load
 from .loaders import reps_weights as loader_reps_weights
 from .loaders import workouts as loader_workouts
+from .loaders import home as loader_home
+
+def create_session(request):
+    try:
+        if Session.current_session(request.user):
+            raise Exception("Session already exists!")
+        session = Session(user=request.user,workout_performed=Workouts_in_plan.current_workout(request.user))
+        session.save()
+        return loader_home(request)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message":str(e)},status=500)
+    
+def end_session(request):
+    try:
+        session = Session.current_session(request.user)
+        session.finished = True
+        session.save()
+        return JsonResponse({})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message":str(e)},status=500)
 
 def reps_weights(request,order_id):
     try:

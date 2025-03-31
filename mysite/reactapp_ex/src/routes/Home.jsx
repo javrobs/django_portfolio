@@ -6,6 +6,9 @@ import BubbleDiv from "../components/BubbleDiv.jsx";
 import MainContainer from "../components/MainContainer.jsx";
 import LinkInText from "../components/LinkInText.jsx";
 import ListOfCols from "../components/ListOfCols.jsx";
+import Button from "../components/Button.jsx";
+import { motion } from "motion/react";
+import { postFetcher } from "../utils/fetcher.js";
 
 const Home =() => {
     const {exercises,name} = useLoaderData();
@@ -20,24 +23,29 @@ const Home =() => {
         </Link>
     });
 
+    async function startSession(){
+        const {success,...data} = await postFetcher("/exercisapp/api/create_session/");
+        if(success){
+            setHomeState(data);
+        } else {
+            setError({tag:data.tag||"",message:data.message||"Unknown error."})
+        }
+    }
+
     return <MainContainer size="md">
-    <BubbleDiv title={logged_in?name||"You don't have a workout yet!":"Greater tracking, greaterest biceps!"}>
-        {logged_in?
-        <>
-            {exerciseList.length>0?
-            <><ListOfCols title="List of exercises">{exerciseList}</ListOfCols>
-            <span className="text-xs">Today's session will be marked as finished 6 hours after your last recorded rep.</span>
-            </>:
-            <div className="text-md">Go to <LinkInText>workouts</LinkInText> to fix that!</div>}
-        </>:
-        <>
-            <p className="text-xl">Do you forget which rep you're on? Are you stuck doing the exact same weight, same reps, every day? Do you pick up some weights and put them back down, repeatedly for hours, with the hopes of being hot, strong or even healthy!?</p>
-            <div className="p-3 flex-col flex gap-4">
-                <p>This is a tracking app that helps with your workouts by logging weight, reps, and sets. You can see your progress over time and keep a history of your training. <LinkInText to="/exercisapp/login/">Log in here to start!</LinkInText></p>
-                <p>If I shared this page with you, let me know what you think of it, or if there are some functions, such as a decent name, that you would like to see. I'm trying to optimize it to work with small screens and few clicks, so you can focus on your workout and not on logging.</p> 
-                <p>Enjoy your workout!</p>
-            </div>
-        </>}
+        {exerciseList.length>0?
+        <BubbleDiv title={homeState.name}>
+            <ListOfCols>{exerciseList}</ListOfCols>
+            {homeState.session?
+            <span className="text-xs">Today's session will be marked as finished 6 hours after your last recorded rep.</span>:
+            <Button icon='start' type="google" inverted={true} onClick={startSession}>Start workout</Button>}
+        </BubbleDiv>:
+        <BubbleDiv title="You don't have a workout yet!">
+            <div className="text-md">Go to <LinkInText to='/exercisapp/workouts/'>workouts</LinkInText> to fix that!</div>
+        </BubbleDiv>}
+    </MainContainer>
+}
+
     </BubbleDiv>
     </MainContainer>
 }

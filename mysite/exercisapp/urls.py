@@ -26,6 +26,8 @@ urlpatterns = [
     path("api/set_rep_weight/<int:order_id>/",workouts.reps_weights),
     path("api/create_workout/<int:workout_id>/",workouts.create_workout),
     path("api/create_workout/",workouts.create_workout),
+    path("api/create_session/",workouts.create_session),
+    path("api/end_session/",workouts.end_session),
     path("api/edit_workouts/<int:workout_id>/",workouts.edit_workouts),
     
     path("api/load/home/",loaders.home),
