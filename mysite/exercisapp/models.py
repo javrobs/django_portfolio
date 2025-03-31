@@ -71,8 +71,8 @@ class Session(models.Model):
 
 class Session_workout(models.Model):
     step = models.DecimalField(decimal_places=1, max_digits=3, blank=True, null=True)
-    units_kg = models.BooleanField(default=False)
-    weight_per_side = models.BooleanField(default=False)
+    units_kg = models.BooleanField(blank=True, null=True)
+    weight_per_side = models.BooleanField(blank=True, null=True)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
 
