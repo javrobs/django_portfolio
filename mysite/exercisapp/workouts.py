@@ -76,9 +76,6 @@ def reps_weights(request,order_id):
                     case "copyLast":
                         last_set = last_session.reps_and_weights_set.get(set=json_data["set"])
                         record.weight = last_set.weight
-                        record.reps = last_set.reps
-                        record.is_warmup = last_set.is_warmup
-                        record.difficulty = last_set.difficulty
                     case "difficulty":
                         record.difficulty = json_data["value"] if record.difficulty != json_data["value"] else None
                     case "reps":
