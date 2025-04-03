@@ -54,14 +54,18 @@ def reps_weights(request,order_id):
         current_workout = session.workout_performed
         exercise_in_program = current_workout.exercise_in_program_set.get(order=order_id)
         result["name"] = exercise_in_program.exercise.name
+        result["description"] = exercise_in_program.exercise.description
         result["exercise_id"] = exercise_in_program.exercise.id
         result["uses_bar"] = exercise_in_program.exercise.uses_bar
         result["sets"] = exercise_in_program.sets
+        find_notes = exercise_in_program.exercise.user_notes_set.filter(user=request.user).first()
+        result["user_notes"] = find_notes.description if find_notes else ""
         result["rep_range"] = [exercise_in_program.exercise.lower_reps,exercise_in_program.exercise.higher_reps]
         result["session"] = session.id
         find_session_workout = Session_workout.objects.filter(exercise__exercise_in_program=exercise_in_program, session=session).first()
         if find_session_workout:
             find_last_workout = Session_workout.objects.filter(exercise__exercise_in_program=exercise_in_program, session__user=request.user).exclude(id=find_session_workout.id).order_by("-session__created_at").first()
+            result["lastState"] = find_last_workout.get_session_reps()[0] if find_last_workout else {}
             result["currentState"],result["workout_session_info"] = find_session_workout.get_session_reps()
         else:
             result["currentState"] = {}

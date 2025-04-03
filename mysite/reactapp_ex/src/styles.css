@@ -20,6 +20,11 @@
     src: url(/static/exercisapp/fonts/RacingSansOne-Regular.ttf)
 }
 
+@font-face {
+    font-family: Offside;
+    src: url(/static/exercisapp/fonts/Offside-Regular.ttf);
+}
+
 html{
     max-height:100dvh;
     overflow-y: hidden;

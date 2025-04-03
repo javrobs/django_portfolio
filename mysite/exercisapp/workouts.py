@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST  
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
-from .models import Reps_and_weights,Session,Exercise,Exercise_in_program,Session_workout,Workout,Workouts_in_plan
+from .models import Reps_and_weights,Session,Exercise,Exercise_in_program,Session_workout,Workout,Workouts_in_plan,User_notes
 from django.forms.models import model_to_dict
 from json import loads as load
 from .loaders import reps_weights as loader_reps_weights
@@ -33,6 +33,7 @@ def end_session(request):
 def reps_weights(request,order_id):
     try:
         json_data = load(request.body)
+        print(json_data)
         with transaction.atomic():
             session = Session.objects.get(id=json_data.get("session"))
             if session != Session.current_session(request.user):
@@ -45,7 +46,7 @@ def reps_weights(request,order_id):
                 session_workout.weight_per_side = last_session.weight_per_side
                 session_workout.save()
             operation = json_data.get("operation")
-            if operation in ["units", "side", "step"]:
+            if operation in ["units", "side", "step", "notes"]:
                 match operation:
                     case "units":
                         session_workout.units_kg = True if json_data["value"] == "kgs" else False
@@ -53,6 +54,12 @@ def reps_weights(request,order_id):
                         session_workout.weight_per_side = True if json_data["value"] == "perside" else False
                     case "step":
                         session_workout.step = json_data["value"] or None
+                    case "notes":
+                        user_notes,created=Exercise.objects.get(id=json_data["exercise_id"]).user_notes_set.get_or_create(user=request.user)
+                        if len(json_data["value"])>300:
+                            raise Exception("User notes are too long")
+                        user_notes.description = json_data["value"]
+                        user_notes.save()
                 session_workout.save()
             else:
                 record,created = session_workout.reps_and_weights_set.get_or_create(set=json_data["set"])
@@ -66,9 +73,6 @@ def reps_weights(request,order_id):
                     case "clone":
                         last_set = session_workout.reps_and_weights_set.get(set=json_data["set"]-1)
                         record.weight = last_set.weight
-                        record.reps = last_set.reps
-                        record.is_warmup = last_set.is_warmup
-                        record.difficulty = last_set.difficulty
                     case "copyLast":
                         last_set = last_session.reps_and_weights_set.get(set=json_data["set"])
                         record.weight = last_set.weight
@@ -88,7 +92,8 @@ def reps_weights(request,order_id):
                                 rep_to_delete.delete()
                 record.save()
             session_data = session_workout.get_session_reps()
-            return JsonResponse({"currentState":session_data[0],"workoutSessionInfo":session_data[1]})
+            notes = User_notes.objects.filter(user=request.user,exercise_id=json_data["exercise_id"]).first()
+            return JsonResponse({"currentState":session_data[0],"workoutSessionInfo":session_data[1],"userNotes":notes.description if notes else ""})
     except Exception as e:
         print(e)
         return JsonResponse({"message":str(e)},status=500)

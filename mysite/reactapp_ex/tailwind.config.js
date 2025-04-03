@@ -18,6 +18,7 @@ export default {
       fontFamily: {
         manrope: ['Manrope', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
         raleway: ['Raleway', 'sans-serif'],
+        offside: ['Offside', 'sans-serif'],
         racing: ['Racing Sans One','sans-serif']
       },
     },

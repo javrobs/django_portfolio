@@ -10,36 +10,44 @@ import { motion } from "motion/react";
 import H1Title from "../components/H1Title.jsx";
 import { postFetcher } from "../utils/fetcher.js";
 import ListOfCols from "../components/ListOfCols.jsx";
+import ModalConfirm from "../components/ModalConfirm.jsx";
 
 const RepsAndWeight = () => {
     const {orderID} = useParams();
-    const {success,currentState,workout_session_info:workoutSessionInfo,...load} = useLoaderData();
-    const [formState,setFormState] = useState({currentState:{},workoutSessionInfo:{}});
+    const {success,currentState,workout_session_info:workoutSessionInfo,user_notes:userNotes,...load} = useLoaderData();
+    const [formState,setFormState] = useState({currentState:{},workoutSessionInfo:{},userNotes:""});
     const {setError} = useContext(userContext);
+    const [showNotes,setShowNotes] = useState(false);
     const nav = useNavigate();
 
 
-    console.log(load,formState)
-
     useEffect(()=>{
         console.log("load id changed")
-        setFormState({currentState,workoutSessionInfo})
+        setFormState({currentState,workoutSessionInfo,userNotes})
     },[load.exercise_id]);
 
     const difficultyRef = [
-        ["Too easy","hover:text-cyan-400","text-cyan-500"],
-        ["Easy","hover:text-emerald-400","text-emerald-500"],
-        ["Normal","hover:text-lime-400","text-lime-500"],
-        ["Hard","hover:text-amber-400","text-amber-500"],
-        ["Too hard","hover:text-red-400","text-red-500"]
+        ["Too easy","sm:hover:text-cyan-400","text-cyan-500"],
+        ["Easy","sm:hover:text-emerald-400","text-emerald-500"],
+        ["Normal","sm:hover:text-lime-400","text-lime-500"],
+        ["Hard","sm:hover:text-amber-400","text-amber-500"],
+        ["Too hard","sm:hover:text-red-400","text-red-500"]
     ]
     
 
-    async function editWeight(set,e){
+    function editWeight(set,e){
         setFormState(oldState=>{
             const matchIndex = oldState.currentState[set]||{};
             return {...oldState,currentState:{...oldState.currentState,[set]:{...matchIndex,"weight":Number(e.target.value)}}}
         });
+    }
+    
+    function editStep(e){
+        setFormState(oldState=>({...oldState,workoutSessionInfo:{...oldState.workoutSessionInfo,step:e.target.value}}));
+    }
+
+    function editNotes(e){
+        setFormState(oldState=>({...oldState,userNotes:e.target.value}));
     }
 
     function increase(set){
@@ -53,10 +61,6 @@ const RepsAndWeight = () => {
     }
     function copyLast(set){
         updateState(set,{operation:"copyLast"});
-    }
-
-    function editStep(e){
-        setFormState(oldState=>({...oldState,workoutSessionInfo:{...oldState.workoutSessionInfo,step:e.target.value}}));
     }
 
     function handleCheck({target}){
@@ -114,20 +118,19 @@ const RepsAndWeight = () => {
     const sets = Array(load.sets + Object.values(formState.currentState).filter(each=>each.warmup).length).fill("1").map((each,i)=>{
         const matchSet = formState.currentState[i+1] || {};
         const lastSet = load.lastState[i+1] || {};
-        console.log(lastSet);
         return <div className={`shadow-md from-zinc-800 to-zinc-900 bg-gradient-to-br flex-col flex gap-2 overflow-hidden rounded-md p-2`} key={i}>
             <div className="flex items-center gap-2">
                 <motion.button 
                     animate={{boxShadow:matchSet.warmup?"0 0 0 100dvw #43140AAA":"0 0 0 0dvw #431407AA"}}
                     transition={{duration:.6,type:"linear"}}
-                    className={` hover:bg-orange-950 ${matchSet.warmup?"bg-orange-950 text-orange-500":""} transition-all hover:text-orange-400 rounded-full w-6 h-6 flex items-center justify-center`} 
+                    className={` sm:hover:bg-orange-950 ${matchSet.warmup?"bg-orange-950 text-orange-500":""} transition-all sm:hover:text-orange-400 rounded-full w-6 h-6 flex items-center justify-center`} 
                     onClick={()=>markAsWarmup(i+1)}
                 >
                     <Icon icon="local_fire_department"/>
                 </motion.button>
-                {lastSet?.weight&&
-                <button onClick={()=>copyLast(i+1)} className="bg-zinc-950 h-6 text-nowrap transition-colors hover:bg-lime-700 px-2 gap-1 flex items-center rounded-full text-sm">
-                    Last: {lastSet.warmup&&<Icon className={"text-sm"} icon="local_fire_department"/>} {lastSet.weight}{load.last_workout_session_info?.uses_kilos?"kg":"lb"} x {lastSet.reps}
+                {Object.keys(lastSet).includes("weight")&&
+                <button onClick={()=>copyLast(i+1)} className="bg-zinc-950 h-6 text-nowrap transition-colors sm:hover:bg-lime-700 px-2 gap-1 flex items-center rounded-full text-sm">
+                    Last: {lastSet.warmup&&<Icon className={"text-sm"} icon="local_fire_department"/>} {lastSet.weight}{load.last_workout_session_info?.uses_kilos?"kg":"lb"} x {lastSet.reps} {lastSet.difficulty>0&&<Icon className={`text-sm ${difficultyRef[lastSet.difficulty-1][2]}`} icon="fitness_center" type="google"/>}
                     <Icon className="!text-sm" icon="replay"/>
                 </button>}   
                 {!matchSet.warmup&&<div className="ms-auto items-center justify-end flex flex-wrap">
@@ -156,17 +159,17 @@ const RepsAndWeight = () => {
                 <div className="absolute right-0 mt-3 flex">
                     {i>0&&Boolean(formState.currentState[i]?.weight)&&
                     <button 
-                        className={`hover:bg-sky-600 rounded-full transition-all hover:text-sky-200 w-8 h-8 flex items-center justify-center`} 
+                        className={`sm:hover:bg-sky-600 rounded-full transition-all sm:hover:text-sky-200 w-8 h-8 flex items-center justify-center`} 
                         onClick={()=>clone(i+1)}
                     ><Icon icon="place_item"/>
                     </button>}
                     {Boolean(matchSet.weight)&&<><button 
-                        className={`hover:bg-lime-600  transition-all hover:text-lime-200 rounded-full w-8 h-8 flex items-center justify-center`} 
+                        className={`sm:hover:bg-lime-600  transition-all sm:hover:text-lime-200 rounded-full w-8 h-8 flex items-center justify-center`} 
                         onClick={()=>increase(i+1)}
                     ><Icon icon="arrow_warm_up"/>
                     </button>
                     <button 
-                        className={`hover:bg-orange-600  transition-all hover:text-orange-200 rounded-full w-8 h-8 flex items-center justify-center`} 
+                        className={`sm:hover:bg-orange-600  transition-all sm:hover:text-orange-200 rounded-full w-8 h-8 flex items-center justify-center`} 
                         onClick={()=>decrease(i+1)}
                     ><Icon icon="arrow_cool_down"/>
                     </button></>}
@@ -185,7 +188,7 @@ const RepsAndWeight = () => {
                                 "bg-amber-500"));
                     return <button 
                         key={k} 
-                        className={`grow ${hoverBG} ${value==matchSet.reps?"bg-opacity-80":"bg-opacity-15"} transition-all hover:bg-opacity-100 ${""} p-1 ${k==0?"rounded-s-full":""} ${k==load.rep_range[1]-load.rep_range[0]+4?"rounded-e-full":""}`}
+                        className={`grow ${hoverBG} ${value==matchSet.reps?"bg-opacity-80":"bg-opacity-15"} transition-all sm:hover:bg-opacity-100 ${""} p-1 ${k==0?"rounded-s-full":""} ${k==load.rep_range[1]-load.rep_range[0]+4?"rounded-e-full":""}`}
                         onClick={()=>setReps(i+1,value)}>
                             {value}
                     </button>
@@ -226,10 +229,17 @@ const RepsAndWeight = () => {
                     </fieldset>
                 </div>
             </div>
+            <div className="flex justify-between gap-1 items-center"><div>{load.description} {formState.userNotes&&<><br/><span className="text-lime-300">My notes:<br/> {formState.userNotes}</span></>}</div><Button type="google" onClick={()=>setShowNotes(true)} justButton={true} icon="edit"/></div>
             {load.uses_bar&&<p className="italic text-xs">The weight of the bar (20kg) is already accounted for.</p>}
             <ListOfCols>
             {sets}
             </ListOfCols>
+            
+            <ModalConfirm show={showNotes} clickOutside={()=>{setShowNotes(false)}}>
+                <h2 className="text-lime-400 font-semibold text-lg">My notes on {load.name.toLowerCase()} ({formState.userNotes.length}/300):</h2>
+                <motion.textarea animate={{scaleY:showNotes?1:0}} name="notes" value={formState.userNotes||""} placeholder="Write here how to set up the machine, the height of the bar, or any information you want to remember next time you do this exercise" className="bg-zinc-950 text-white p-1 shadow-md focus:outline-secondary rounded-lg" onInput={editNotes} onBlur={handleCheck} rows={5}/>
+                <Button type="google" icon="check" onClick={()=>{setShowNotes(false)}}>Done</Button>
+            </ModalConfirm>
             {load.next?
                 <Link className="w-full flex flex-col" to={`/exercisapp/today/${load.next}`}><Button>Next!</Button></Link>:
                 <Button onClick={endWorkout}>Finish workout!</Button>

@@ -65,8 +65,8 @@ const Header = () => {
                     whileHover={{scale:1.4}} 
                     style={{transformOrigin:"left"}} 
                     transition={{type:"tween"}} 
-                    className="text-2xl text-secondary flex items-center transition-all duration-300 font-manrope cursor-pointer font-semibold rounded-md p-2 hover:font-normal hover:bg-secondaryTransparent">
-                        <span className="max-sm:hidden font-racing">UnnamedApp</span><Icon icon="fitness_center"/>
+                    className="text-2xl text-lime-400 flex items-center transition-all duration-300 font-manrope cursor-pointer font-semibold rounded-md p-2 hover:font-normal hover:bg-secondaryTransparent">
+                        <div className="max-sm:hidden font-offside text-start" style={{lineHeight:"1.2rem"}}>LIFT<br/>LEFT</div><Icon icon="fitness_center"/>
                 </motion.button>
             </Link>
             <div className="flex gap-x-3">
