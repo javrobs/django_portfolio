@@ -17,12 +17,8 @@ const Workouts = () => {
     const [show,setShow] = useState({});
     const {setError} = useContext(userContext);
 
-    const myWorkouts = workoutState.map((each,i)=><div className={` ${each.active?"":"opacity-50"} rounded-md flex justify-between gap-2 items-center shadow-md from-zinc-800 to-zinc-900 bg-gradient-to-br p-2`} key={each.id}>
-        <div className="flex flex-col gap-1 text-wrap">
-            {each.name}
-            <ListOfTags tags={each.muscles}/> 
-        </div>
-        <div className="flex gap-1">
+    const myWorkouts = workoutState.map((each,i)=>{
+        const buttons = <>
             {each.active&&<>
                 <Button className={"h-7 w-7 flex text-lg items-center"} disabled={i==0} icon="arrow_upward" onClick={()=>{modifyWorkouts(each.id,"up")}} type="google"/>
                 <Button className={"h-7 w-7 flex text-lg items-center"} disabled={i+1==workoutState.filter(each=>each.active).length} icon="arrow_downward" onClick={()=>{modifyWorkouts(each.id,"down")}} type="google"/>
@@ -34,10 +30,9 @@ const Workouts = () => {
             {each.active?
             <Button className={"h-7 w-7 flex text-lg items-center"} icon="remove" onClick={()=>modifyWorkouts(each.id,"remove")} type="google"/>:
             <Button className={"h-7 w-7 flex text-lg items-center"} icon="add" onClick={()=>modifyWorkouts(each.id,"add")} type="google"/>}
-        </div>
-    </div>)
-
-    const otherWorkouts = []
+        </>
+        return <WorkoutCard workout={each} buttons={buttons} key={each.id}/>
+    })
 
     async function showDetails(id){
         const data = await getFetcher("/exercisapp/api/load/workout_details/"+id+"/");
@@ -69,15 +64,6 @@ const Workouts = () => {
                 </div>
             }
         </BubbleDiv>
-        {/* <BubbleDiv title="Browse workouts">
-            <p>Your friends' workouts appear here, you can branch your own workouts from theirs.</p>
-            {Boolean(otherWorkouts.length)?
-                otherWorkouts:
-                <div className="rounded-md shadow-md bg-zinc-900 p-2">
-                    Your friends have no workouts, or you don't have enough friends :'(
-                </div>
-            }
-        </BubbleDiv> */}
         <ModalConfirm show={show.show} clickOutside={()=>{setShow({})}}>
             <H1Title>{show.name}</H1Title>
             {(show.exercises||[]).map(each=><div key={each}>{each}</div>)}
@@ -85,6 +71,18 @@ const Workouts = () => {
         </ModalConfirm>
 
     </MainContainer>
+}
+
+export const WorkoutCard = ({workout,buttons}) => {
+    return <div className={` ${workout.active?"":"opacity-50"} rounded-md flex justify-between gap-2 items-center shadow-md from-zinc-800 to-zinc-900 bg-gradient-to-br p-2`}>
+        <div className="flex flex-col gap-1 text-wrap">
+            {workout.name}
+            <ListOfTags tags={workout.muscles}/> 
+        </div>
+        <div className="flex gap-1">
+            {buttons}
+        </div>
+    </div>
 }
 
 export default Workouts;
