@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.db import transaction
 from django.contrib.auth.models import User
+from .models import Friends
 
 # Create your views here.
 
@@ -74,3 +75,43 @@ def signup(request):
 def logout_user(request):
     logout(request)
     return JsonResponse({"user_logged_out":request.user.is_authenticated})
+
+@login_required
+@require_POST
+def respond_friendship(request):
+    try:
+        json_data = json.loads(request.body)
+        friendship = Friends.objects.get(id=json_data["friendship"])
+        if json_data["accept"]:
+            friendship.status = True
+            friendship.save()
+        else:
+            friendship.delete()
+        return JsonResponse({})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"message": "Error"}, status=500)
+        
+@login_required
+def request_friendship(request):
+    tag = ""
+    try:
+        json_data = json.loads(request.body)
+        username = json_data["username"].lower().strip()
+        new_friend = User.objects.get(username=username)
+        if Friends.are_friends(new_friend.id,request.user.id):
+            tag = "friendSearch"
+            raise Exception("You're already friends")
+        other_friend_request = Friends.objects.filter(friend_1=new_friend,friend_2=request.user).first()
+        if other_friend_request:
+            tag = "friendSearch"
+            raise Exception(f"Respond to {new_friend.first_name}'s friend request")
+        Friends.objects.create(friend_2=new_friend,friend_1=request.user)
+        return JsonResponse({"showMessage":f"A friend request was sent to {new_friend.get_full_name()} ({new_friend.username})"})
+    except User.DoesNotExist:
+        return JsonResponse({"tag":"friendSearch","message": "No match to the username"}, status=500)
+    except Exception as e:
+        if tag:
+            return JsonResponse({"tag": tag, "message": str(e)}, status=500)
+        else:
+            return JsonResponse({"message": str(e)}, status=500)

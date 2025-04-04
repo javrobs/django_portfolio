@@ -22,6 +22,8 @@ urlpatterns = [
     path("api/login/login_user/",login.login_user),
     path("api/login/load_user/",login.load_user),
     path("api/login/logout_user/",login.logout_user),
+    path("api/login/respond_friendship/",login.respond_friendship),
+    path("api/login/request_friendship/",login.request_friendship),
 
     path("api/set_rep_weight/<int:order_id>/",workouts.reps_weights),
     path("api/create_workout/<int:workout_id>/",workouts.create_workout),
