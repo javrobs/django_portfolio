@@ -41,9 +41,10 @@ def create_workout(request,workout_id=None):
 @login_required
 def workout_details(request,workout_id):
     workout = Workout.objects.get(id=workout_id)
-    result = {"name":workout.name}
-    result["exercises"]=[f"{w2.exercise.name} x {w2.sets}" for w2 in workout.exercise_in_program_set.order_by("order").all()]
-    return JsonResponse(result)
+    if workout.created_by == request.user or (Friends.are_friends(workout.created_by.id,request.user.id) and workout.workouts_in_plan_set.exists()):
+        result = {"name":workout.name}
+        result["exercises"]=[f"{w2.exercise.name} x {w2.sets}" for w2 in workout.exercise_in_program_set.order_by("order").all()]
+        return JsonResponse(result)
 
 @login_required
 def reps_weights(request,order_id):
