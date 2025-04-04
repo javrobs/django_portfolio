@@ -148,3 +148,16 @@ class Workouts_in_plan(models.Model):
             order = workouts.get(workout=workout).order
             return workouts.get(order=1 if order == workouts.count() else order+1).workout
         return workout
+    
+class Friends(models.Model):
+    friend_1 = models.ForeignKey(User,related_name="friend_requester",on_delete=models.CASCADE)
+    friend_2 = models.ForeignKey(User,related_name="friend_receiver",on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+
+    @staticmethod
+    def friends_of(user):
+        return ([e.friend_1 for e in user.friend_receiver.filter(status=True).all()] + 
+        [e.friend_2 for e in user.friend_requester.filter(status=True).all()])
+    
+    def are_friends(user1_id,user2_id):
+        return Friends.objects.filter(status=True).filter(Q(friend_1_id=user1_id,friend_2=user2_id)|Q(friend_2_id=user1_id,friend_1=user2_id)).exists()

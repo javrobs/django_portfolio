@@ -23,6 +23,10 @@ class ExerciseInProgramAdmin(admin.ModelAdmin):
 
 class ExerciseAdmin(admin.ModelAdmin):
     list_display = ['name','lower_reps','higher_reps','uses_bar']
+
+    
+class FriendsAdmin(admin.ModelAdmin):
+    list_display = ['friend_1','friend_2','status']
   
 admin.site.register(Workout,)
 admin.site.register(Muscle_group,MuscleGroupAdmin)
@@ -33,3 +37,5 @@ admin.site.register(Session,SessionAdmin)
 admin.site.register(Workouts_in_plan,WorkoutsInPlanAdmin)
 admin.site.register(Session_workout,SessionWorkoutAdmin)
 admin.site.register(User_notes)
+admin.site.register(Friends,FriendsAdmin)
+
