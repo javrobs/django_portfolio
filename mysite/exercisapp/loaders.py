@@ -1,7 +1,8 @@
 from django.http import JsonResponse
-from .models import Session_workout,Workout,Exercise,Workouts_in_plan,Session
+from .models import Session_workout,Workout,Exercise,Workouts_in_plan,Session,Friends
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 def home(request):
     if request.user.is_authenticated:
@@ -78,3 +79,32 @@ def reps_weights(request,order_id):
         print(e)
         return JsonResponse({"message":str(e)},status=500)
     
+@login_required
+def friends(request):
+    result={}
+    result['friendRequests']=[{"username":e.friend_1.username, "name":e.friend_1.get_full_name(),"id":e.id} for e in request.user.friend_receiver.filter(status=False).all()]
+    result['currentFriends']=[{"username":e.username, "name":e.get_full_name(), "id_friend":e.id} for e in Friends.friends_of(request.user)]
+    return JsonResponse(result)
+
+
+@login_required
+def my_profile(request):
+    if request.user.is_authenticated:
+        return profile(request,request.user.id)
+
+@login_required
+def profile(request,profile_id):
+    if request.user.is_authenticated:
+        result = {}
+        if request.user.id == profile_id or Friends.are_friends(profile_id,request.user.id):
+            user = User.objects.get(id=profile_id)
+            result["name"] = [user.first_name,user.last_name]
+            last_workout = user.session_set.order_by("-created_at").first()
+            if last_workout:
+                result["last_workout"] = last_workout.created_at.strftime("%B, %d").replace(", 0",", ")
+            result["current_routine"] = [{"id":w.workout.id,"active":True,"name":w.workout.name,"muscles":w.workout.get_muscles()} for w in user.workouts_in_plan_set.order_by("order").all()]
+            result["finished_workouts"] = user.session_set.count()
+            result["myself"] = request.user.id == profile_id
+            return JsonResponse(result)
+        else:
+            return JsonResponse({"message":"Access denied"},status=500)

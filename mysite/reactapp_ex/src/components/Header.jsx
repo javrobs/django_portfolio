@@ -18,6 +18,8 @@ const Header = () => {
         {url:"/exercisapp/", text:"Home"}
     ].concat(logged_in?[
         {url:"/exercisapp/workouts", text:"Workouts"},
+        {url:"/exercisapp/friends", text:"Friends"},
+        {url:"/exercisapp/my-profile", text:"My profile"},
     ]:[]).map(each=>{
         return <Link 
             key={each.url}

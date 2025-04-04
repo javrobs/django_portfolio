@@ -31,6 +31,7 @@ urlpatterns = [
     path("api/create_session/",workouts.create_session),
     path("api/end_session/",workouts.end_session),
     path("api/edit_workouts/<int:workout_id>/",workouts.edit_workouts),
+    path("api/copy_workout/",workouts.copy_workout),
     
     path("api/load/home/",loaders.home),
     path("api/load/workouts/",loaders.workouts),
@@ -38,4 +39,7 @@ urlpatterns = [
     path("api/load/create_workout/",loaders.create_workout),
     path("api/load/create_workout/<int:workout_id>/",loaders.create_workout),
     path("api/load/today/<int:order_id>",loaders.reps_weights),
+    path("api/load/friends/",loaders.friends),
+    path("api/load/profile/<int:profile_id>/",loaders.profile),
+    path("api/load/my_profile/",loaders.my_profile),
 ]

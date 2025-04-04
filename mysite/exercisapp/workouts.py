@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST  
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
-from .models import Reps_and_weights,Session,Exercise,Exercise_in_program,Session_workout,Workout,Workouts_in_plan,User_notes
+from .models import Reps_and_weights,Session,Exercise,Exercise_in_program,Session_workout,Workout,Workouts_in_plan,User_notes,Friends
 from django.forms.models import model_to_dict
 from json import loads as load
 from .loaders import reps_weights as loader_reps_weights
@@ -159,4 +159,25 @@ def edit_workouts(request,workout_id):
         raise Exception(f"I can't {instruction}")
     except Exception as e:
         print(e)
+        return JsonResponse({"message":str(e)},status=500)
+    
+
+@require_POST
+def copy_workout(request):
+    try:
+        with transaction.atomic():
+            json_data = load(request.body)
+            workout = Workout.objects.get(id=json_data["id"])
+            if Workout.objects.filter(created_by=request.user).count() >= 10:
+                raise Exception("You already have 10 workouts, do you really need another one?")
+            if workout.created_by in Friends.friends_of(request.user) and workout.workouts_in_plan_set.exists():
+                new_name = f"{workout.created_by.first_name}'s {workout.name}"
+                if len(new_name)>40:
+                    new_name = {workout.name}
+                new_workout = Workout.objects.create(name=new_name,created_by=request.user)
+                for e in workout.exercise_in_program_set.all():
+                    Exercise_in_program.objects.create(workout=new_workout,exercise=e.exercise,order=e.order,sets=e.sets)
+                return JsonResponse({"name":workout.name,"new_id":new_workout.id})
+            raise Exception("You don't have access to this workout")
+    except Exception as e:
         return JsonResponse({"message":str(e)},status=500)
