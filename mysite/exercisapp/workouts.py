@@ -130,6 +130,7 @@ def edit_workouts(request,workout_id):
     try:
         with transaction.atomic():
             json_data = load(request.body)
+            print(json_data)
             instruction = json_data["instruction"]
             workout = Workout.objects.get(id=workout_id)
             workouts_in_plan = request.user.workouts_in_plan_set
@@ -139,19 +140,22 @@ def edit_workouts(request,workout_id):
                 count=workouts_in_plan.count()
                 workouts_in_plan.create(workout=workout,order=count+1)
                 return loader_workouts(request)
-            this_workout_in_plan = workouts_in_plan.get(workout_id=workout_id)
-            if instruction=="remove":
-                this_workout_in_plan.delete()
-            elif instruction in ["up","down"]:
-                if instruction == "up":
-                    switch_with=workouts_in_plan.filter(order__lt=this_workout_in_plan.order).order_by("-order").first()
-                else:
-                    switch_with=workouts_in_plan.filter(order__gt=this_workout_in_plan.order).order_by("order").first()
-                that_order = switch_with.order
-                switch_with.order = this_workout_in_plan.order
-                this_workout_in_plan.order = that_order
-                switch_with.save()
-                this_workout_in_plan.save()
+            elif instruction == "delete":
+                workout.delete()
+            else:
+                this_workout_in_plan = workouts_in_plan.get(workout_id=workout_id)
+                if instruction=="remove":
+                    this_workout_in_plan.delete()
+                elif instruction in ["up","down"]:
+                    if instruction == "up":
+                        switch_with=workouts_in_plan.filter(order__lt=this_workout_in_plan.order).order_by("-order").first()
+                    else:
+                        switch_with=workouts_in_plan.filter(order__gt=this_workout_in_plan.order).order_by("order").first()
+                    that_order = switch_with.order
+                    switch_with.order = this_workout_in_plan.order
+                    this_workout_in_plan.order = that_order
+                    switch_with.save()
+                    this_workout_in_plan.save()
             for i,w in enumerate(workouts_in_plan.order_by("order").all()):
                 w.order= i+1
                 w.save()
@@ -179,5 +183,26 @@ def copy_workout(request):
                     Exercise_in_program.objects.create(workout=new_workout,exercise=e.exercise,order=e.order,sets=e.sets)
                 return JsonResponse({"name":workout.name,"new_id":new_workout.id})
             raise Exception("You don't have access to this workout")
+    except Exception as e:
+        return JsonResponse({"message":str(e)},status=500)
+    
+@require_POST
+def delete_workout(request):
+    try:
+        with transaction.atomic():
+            json_data = load(request.body)
+            workout = Workout.objects.get(id=json_data["id"])
+            # if Workout.objects.filter(created_by=request.user).count() >= 10:
+            #     raise Exception("You already have 10 workouts, do you really need another one?")
+            # if workout.created_by in Friends.friends_of(request.user) and workout.workouts_in_plan_set.exists():
+            #     new_name = f"{workout.created_by.first_name}'s {workout.name}"
+            #     if len(new_name)>40:
+            #         new_name = {workout.name}
+            #     new_workout = Workout.objects.create(name=new_name,created_by=request.user)
+            #     for e in workout.exercise_in_program_set.all():
+            #         Exercise_in_program.objects.create(workout=new_workout,exercise=e.exercise,order=e.order,sets=e.sets)
+            #     return JsonResponse({"name":workout.name,"new_id":new_workout.id})
+            # raise Exception("You don't have access to this workout")
+            raise Exception("Don't delete it!")
     except Exception as e:
         return JsonResponse({"message":str(e)},status=500)

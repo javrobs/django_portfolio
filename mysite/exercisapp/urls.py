@@ -34,6 +34,7 @@ urlpatterns = [
     path("api/end_session/",workouts.end_session),
     path("api/edit_workouts/<int:workout_id>/",workouts.edit_workouts),
     path("api/copy_workout/",workouts.copy_workout),
+    path("api/delete_workout/",workouts.delete_workout),
     
     path("api/load/home/",loaders.home),
     path("api/load/workouts/",loaders.workouts),

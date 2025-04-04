@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import MainContainer from "../components/MainContainer.jsx";
 import BubbleDiv from "../components/BubbleDiv.jsx";
-import { useLoaderData } from "react-router";
+import { useLoaderData, Link } from "react-router";
 import { WorkoutCard } from "./Workouts.jsx";
 import ListOfCols from "../components/ListOfCols.jsx";
 import Button from "../components/Button.jsx";
@@ -31,9 +31,9 @@ const Profile = () => {
             setShow({show:true,
                 content:<>
                     <H1Title>{data.name} copied!</H1Title>
-                    <Button type="google" icon="undo" onClick={()=>{setShow({})}}/>
-                    <Button type="google" icon="undo" onClick={()=>{setShow({})}}/>
-                    <Button type="google" icon="undo" onClick={()=>{setShow({})}}/>
+                    <Link className="self-stretch flex flex-col" to={`/exercisapp/edit-workout/${data.new_id}/`}><Button type="google" icon="edit" onClick={()=>{setShow({})}}>Edit</Button></Link>
+                    <Link className="self-stretch flex flex-col" to={`/exercisapp/workouts/`}><Button type="google" icon="fitness_center" onClick={()=>{setShow({})}}>Go to workouts</Button></Link>
+                    <Button type="google" icon="undo" onClick={()=>{setShow({})}}>Return</Button>
                 </>});
         } else {
             console.log(data);
@@ -60,7 +60,6 @@ const Profile = () => {
         </BubbleDiv>
         <ModalConfirm show={show.show} clickOutside={()=>{setShow({})}}>
             {show.content}
-            
         </ModalConfirm>
     </MainContainer>
 }

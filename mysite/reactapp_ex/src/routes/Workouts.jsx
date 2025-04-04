@@ -15,14 +15,15 @@ const Workouts = () => {
     const {my_workouts} = useLoaderData();
     const [workoutState,setWorkoutState] = useState(my_workouts);
     const [show,setShow] = useState({});
+    const [deleteThis,setDeleteThis] = useState({});
     const {setError} = useContext(userContext);
 
     const myWorkouts = workoutState.map((each,i)=>{
         const buttons = <>
-            {each.active&&<>
-                <Button className={"h-7 w-7 flex text-lg items-center"} disabled={i==0} icon="arrow_upward" onClick={()=>{modifyWorkouts(each.id,"up")}} type="google"/>
-                <Button className={"h-7 w-7 flex text-lg items-center"} disabled={i+1==workoutState.filter(each=>each.active).length} icon="arrow_downward" onClick={()=>{modifyWorkouts(each.id,"down")}} type="google"/>
-            </>}
+            {each.active?<>
+                <Button className={"h-7 w-7 flex text-lg items-center"} disabled={i==0} icon="arrow_upward" onClick={()=>modifyWorkouts(each.id,"up")} type="google"/>
+                <Button className={"h-7 w-7 flex text-lg items-center"} disabled={i+1==workoutState.filter(each=>each.active).length} icon="arrow_downward" onClick={()=>modifyWorkouts(each.id,"down")} type="google"/>
+            </>:<Button className={"h-7 w-7 flex text-lg items-center !text-rose-100 !bg-rose-800 hover:bg-rose-500 !ring-rose-900 !ring-opacity-35"}  icon="delete" onClick={()=>setDeleteThis({show:true,id:each.id,name:each.name})} type="google"/>}
             <Link to={"/exercisapp/edit-workout/"+each.id+"/"}>
                 <Button className={"h-7 w-7 flex text-lg items-center"} icon="edit" type="google"/>
             </Link>
@@ -68,6 +69,14 @@ const Workouts = () => {
             <H1Title>{show.name}</H1Title>
             {(show.exercises||[]).map(each=><div key={each}>{each}</div>)}
             <Button type="google" icon="undo" onClick={()=>{setShow({})}}/>
+        </ModalConfirm>
+        <ModalConfirm show={deleteThis.show} clickOutside={()=>{setDeleteThis({})}}>
+            <H1Title>Do you really want to delete "{deleteThis.name}"?</H1Title>
+            <p>This action <span className="font-extrabold underline text-rose-500">CANNOT</span> be undone. I'm serious!</p>
+            <div className="flex gap-2 flex-wrap">
+                <Button className={"grow basis-0"} type="google" icon="undo" onClick={()=>{setDeleteThis({})}}>Go back</Button>
+                <Button className={"grow basis-0 !text-rose-100 !bg-rose-800 hover:bg-rose-500 !ring-rose-900 !ring-opacity-35"} type="google" icon="delete" onClick={()=>modifyWorkouts(deleteThis.id,"delete").then(()=>setDeleteThis({}))}>DELETE FOREVER!!</Button>
+            </div>
         </ModalConfirm>
 
     </MainContainer>
