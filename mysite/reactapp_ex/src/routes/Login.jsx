@@ -1,4 +1,4 @@
-import React, {useContext,useState,useEffect} from "react"
+import React, {useContext,useState} from "react"
 import {Link,useNavigate} from "react-router"
 import BubbleDiv from "../components/BubbleDiv.jsx";
 import MainContainer from "../components/MainContainer.jsx";

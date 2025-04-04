@@ -31,7 +31,7 @@ const Layout =() => {
         <Footer/>
     </div>
     <AnimatePresence>
-        {error.tag=="" && Boolean(error.message) &&
+        {!error.tag && Boolean(error.message) &&
             <motion.div ref={errorRef} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="absolute flex sm:max-w-full max-w-screen-sm gap-1 items-center top-24 self-center bg-rose-800 bg-opacity-90 backdrop-blur-sm p-3 rounded-md shadow-md">
                 <div>{error.message}</div><Button icon="close" type="google" onClick={()=>setError({})}/>
             </motion.div>

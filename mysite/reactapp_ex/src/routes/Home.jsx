@@ -21,7 +21,7 @@ const UserHome = () => {
     const {setError} = useContext(userContext)
 
     const exerciseList = (homeState.exercises||[]).map(each=>{
-        return <Link className={`cursor-default`} to={Boolean(homeState.session)&&`/exercisapp/today/${each.order}`} key={each.id}>
+        return <Link className={`cursor-default`} to={Boolean(homeState.session)&&`/exercisapp/today/${each.order}/`} key={each.id}>
             <motion.div animate={{opacity:Boolean(homeState.session)?1:.4}} className={`bg-gradient-to-br group flex gap-1 items-center justify-between ${each.completed==each.sets?"from-green-800 to-lime-600":"from-zinc-800 to-zinc-900"} p-2 rounded-md shadow-md`}>
                 <span className={Boolean(homeState.session)?"group-hover:underline group-hover:text-lime-500":""}>{each.name}</span>
                 <span>{each.completed}/{each.sets}</span>
