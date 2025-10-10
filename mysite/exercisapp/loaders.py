@@ -24,7 +24,9 @@ def home(request):
 @login_required
 def workouts(request): 
     workouts = [{"id":w.workout.id,"active":True,"name":w.workout.name,"muscles":w.workout.get_muscles()} for w in request.user.workouts_in_plan_set.order_by("order").all()]
+    print(workouts)
     workouts += [{"id":w.id,"active":False,"name":w.name,"muscles":w.get_muscles()} for w in Workout.objects.exclude(workouts_in_plan__user=request.user).filter(created_by=request.user)]
+    print(workouts)
     return JsonResponse({"my_workouts":workouts})
 
 @login_required

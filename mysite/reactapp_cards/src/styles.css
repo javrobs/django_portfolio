@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: Roboto;
+    src: url(/static/cards/fonts/Roboto-VariableFont_wdth,wght.ttf);
+}
+
+html{
+    min-height:100dvh;
+    scrollbar-width:none;
+    overflow-y: auto;
+}
+
+#root{
+    flex-direction:column;
+}
+
+body{
+    @apply flex flex-col overflow-x-hidden min-h-dvh -z-10;
+    font-family: Roboto, Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main{
+    scrollbar-width:none;
+    overflow-x: hidden;
+}
+
+body::before{
+    content:"";
+    z-index: -2;
+    position:fixed;
+    background:url(/static/cards/images/bg.webp);
+    background-position: center;
+    height:100dvh;
+    background-size: cover;
+    top:0;
+    left:0;
+    width:100%;
+}
+
+body::after{
+    content:"";
+    z-index:-1;
+    position:fixed;
+    backdrop-filter:brightness(.3) contrast(.9);
+    height:100dvh;
+    width:100%;
+}
+
+.text-shadow-none{
+    text-shadow: none;
+}
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}

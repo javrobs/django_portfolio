@@ -15,17 +15,3 @@ urlpatterns = [
     path('data/',views.all_data,name='data_api'),
     path('data/<int:language>/',views.all_data,name='data_one_api'),
 ]
-
-
-# @app.route("/")
-# def home():
-#     return "To website:<br>\
-#             <a href='http://127.0.0.1:5000/endpoint'>New York City LEP Speakers</a><br><br>\
-#             These are the possible routes for our API:<br>\
-#             <a href='http://127.0.0.1:5000/communities_all'>/communities_all</a><br>\
-#             <a href='http://127.0.0.1:5000/communities/Spanish'>/communities/Spanish</a> (Ex. Spanish)<br>\
-#             <a href='http://127.0.0.1:5000/populations_all'>/populations_all</a><br>\
-#             <a href='http://127.0.0.1:5000/populations/Spanish'>/populations/language </a> (Ex. Spanish)<br>\
-#             <a href='http://127.0.0.1:5000/demographic_all'>/demographic_all</a><br>\
-#             <a href='http://127.0.0.1:5000/demographic/Spanish'>/demographic/language </a> (Ex. Spanish)<br>"
-          
