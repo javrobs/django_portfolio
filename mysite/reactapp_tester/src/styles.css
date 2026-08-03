@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+    font-family: Raleway;
+    src: url(/static/home/fonts/Raleway-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url(/static/home/fonts/Manrope-VariableFont_wght.ttf) format("truetype"),
+        url(/static/home/fonts/Manrope-VariableFont_wght.ttf) format("truetype-variations");
+    font-weight: 100 1000;
+}
+
+html{
+    max-height:100dvh;
+}
+
+#root{
+    flex-direction:column;
+    height:100dvh;
+    @apply bg-slate-200
+}
+
+body{
+    @apply flex flex-col min-h-dvh -z-10;
+    font-family: Manrope,Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 1px 1px var(--darktextlow);
+}
+
+@media print {
+    body {
+        margin: 0;
+    }
+    :not(html,#root,body,main,.showPrint,.showPrint *) {
+      display: none;
+    }
+    .showPrint {
+        page-break-inside: avoid;
+        page-break-after:always;
+    }
+}
+
+@page {
+    /* size: portrait; */
+}
